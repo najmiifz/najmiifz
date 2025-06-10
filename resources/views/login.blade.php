@@ -14,7 +14,7 @@
         <strong>Hayu Cukur</strong>
     </a>
     <div class="ms-auto">
-        <a href="/webnajmi" class=" top btn btn-danger">home</a>
+        <a href="/webnajmi" class=" top btn btn-danger">Home</a>
         <a href="/login" class="btn btn-outline-dark me-2">Login</a>
         <a href="/register" class="btn btn-danger">Daftar</a>
     </div>
