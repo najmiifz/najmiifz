@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Register - Hayu Cukur</title>
@@ -23,22 +21,42 @@
 <!-- Form Register -->
 <div class="container mt-5" style="max-width: 400px;">
     <h3 class="mb-4 text-center">Daftar</h3>
-    <form>
+
+    {{-- Show validation errors --}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- Show success message --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form method="POST" action="/register">
+        @csrf
         <div class="mb-3">
             <label>Nama</label>
-            <input type="text" class="form-control" placeholder="Masukkan nama lengkap">
+            <input name="name" type="text" class="form-control" placeholder="Masukkan nama lengkap">
         </div>
         <div class="mb-3">
             <label>Email</label>
-            <input type="email" class="form-control" placeholder="Masukkan email">
+            <input name="email" type="email" class="form-control" placeholder="Masukkan email">
         </div>
         <div class="mb-3">
             <label>Password</label>
-            <input type="password" class="form-control" placeholder="Masukkan password">
+            <input name="password" type="password" class="form-control" placeholder="Masukkan password">
         </div>
         <div class="mb-3">
             <label>Konfirmasi Password</label>
-            <input type="password" class="form-control" placeholder="Ulangi password">
+            <input name="password_confirmation" type="password" class="form-control" placeholder="Ulangi password">
         </div>
         <button type="submit" class="btn btn-danger w-100">Daftar</button>
     </form>
