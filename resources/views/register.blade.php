@@ -1,66 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Register - Hayu Cukur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Hayu Cukur</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+
+        .register-box {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-register {
+            background-color: #B22222;
+            border: none;
+        }
+
+        .btn-register:hover {
+            background-color: #a11d1d;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-light bg-white shadow-sm px-4">
-    <a class="navbar-brand d-flex align-items-center" href="/">
-        <img src="/images/logo.png" alt="Logo Hayu Cukur" style="height: 40px;" class="me-2">
-        <strong>Hayu Cukur</strong>
-    </a>
-    <div class="ms-auto">
-        <a href="/webnajmi" class="btn btn-outline-dark me-2">home</a>
-        <a href="/login" class="btn btn-outline-dark me-2">Login</a>
-        <a href="/register" class="btn btn-danger">Daftar</a>
+    {{-- Navbar --}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://placehold.co/100x100/B22222/ffffff?text=HC" alt="Logo" height="45" class="me-2 rounded-circle">
+                <span class="fw-bold fs-5">HayuCukur</span>
+            </a>
+        </div>
+    </nav>
+
+    {{-- Form Daftar --}}
+    <div class="register-box">
+        <h3 class="text-center mb-4">Buat Akun HayuCukur</h3>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" name="name" id="name" required placeholder="Contoh: Rofi Aziz">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Alamat Email</label>
+                <input type="email" class="form-control" name="email" id="email" required placeholder="email@example.com">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Kata Sandi</label>
+                <input type="password" class="form-control" name="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
+                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required placeholder="••••••••">
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-register text-white fw-bold">Daftar</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <small>Sudah punya akun? <a href="/login">Login di sini</a></small>
+            </div>
+        </form>
     </div>
-</nav>
 
-<!-- Form Register -->
-<div class="container mt-5" style="max-width: 400px;">
-    <h3 class="mb-4 text-center">Daftar</h3>
-
-    {{-- Show validation errors --}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    {{-- Show success message --}}
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <form method="POST" action="/register">
-        @csrf
-        <div class="mb-3">
-            <label>Nama</label>
-            <input name="name" type="text" class="form-control" placeholder="Masukkan nama lengkap">
-        </div>
-        <div class="mb-3">
-            <label>Email</label>
-            <input name="email" type="email" class="form-control" placeholder="Masukkan email">
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <input name="password" type="password" class="form-control" placeholder="Masukkan password">
-        </div>
-        <div class="mb-3">
-            <label>Konfirmasi Password</label>
-            <input name="password_confirmation" type="password" class="form-control" placeholder="Ulangi password">
-        </div>
-        <button type="submit" class="btn btn-danger w-100">Daftar</button>
-    </form>
-</div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

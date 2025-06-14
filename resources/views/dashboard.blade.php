@@ -21,6 +21,7 @@
 <div class="container mt-5">
     <h1>Selamat datang, {{ Auth::user()->name }}</h1>
     <p>Ini adalah dashboard setelah login.</p>
+    <a href="booking" class="btn btn-primary">Booking sekarang</a>
 </div>
 </body>
 </html>
