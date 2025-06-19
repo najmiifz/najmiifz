@@ -54,6 +54,19 @@ Route::get('/pilih-akun-mitra', function () {
     return view('pilih-akun-mitra');
 });
 
+Route::get('/riwayat-booking', function () {
+    return view('riwayat-booking');
+});
+
+Route::get('/dashboard-mitra', function () {
+    return view('dashboard-mitra');
+});
+
+Route::get('/booking-mitra', function () {
+    return view('booking-mitra');
+});
+
+
 route::get('person', [PersonController::class, 'index'])->name('person.index');
 route::get('person/create', [PersonController::class, 'create'])->name('person.create');
 route::post('person/store',[PersonController::class, 'store'])->name('person.store');

@@ -77,6 +77,7 @@
 
         <a href="/register" class="btn btn-option btn-daftar">Belum punya akun? Daftar Sekarang</a>
         <a href="/login" class="btn btn-option btn-login">Sudah punya akun? Login</a>
+        <a href="/pilih-akun-mitra" class="btn btn-option btn-login">Daftar Sebagai Mitra Hayucukur</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

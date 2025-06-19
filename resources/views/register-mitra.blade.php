@@ -3,86 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Sebagai Mitra - HayuCukur</title>
+    <title>Daftar - Hayu Cukur</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
         }
 
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
+        .register-box {
+            max-width: 500px;
+            margin: 80px auto;
             padding: 40px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-primary {
+        .btn-register {
             background-color: #B22222;
-            border-color: #B22222;
+            border: none;
         }
 
-        .btn-primary:hover {
-            background-color: #9f1f1f;
-            border-color: #9f1f1f;
+        .btn-register:hover {
+            background-color: #a11d1d;
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-4">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="https://placehold.co/100x100/B22222/fff?text=HC" alt="Logo Hayu Cukur" class="me-2 rounded-circle" style="height: 45px;">
-            <span class="fw-bold fs-5">HayuCukur</span>
-        </a>
-        <div class="ms-auto">
-            <a href="/login" class="btn btn-outline-dark me-2">Login</a>
-            <a href="/register" class="btn btn-primary">Daftar</a>
+    {{-- Navbar --}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://placehold.co/100x100/B22222/ffffff?text=HC" alt="Logo" height="45" class="me-2 rounded-circle">
+                <span class="fw-bold fs-5">HayuCukur</span>
+            </a>
         </div>
-    </div>
-</nav>
+           <div class="ms-auto">
+                <a href="/beranda" class="btn btn-primary">Beranda</a>
+            </div>
+    </nav>
 
-<div class="container">
-    <div class="form-container">
-        <h2 class="mb-4 text-center fw-bold">Daftar Sebagai Mitra Barbershop</h2>
-        <form action="/register-mitra" method="POST">
+    {{-- Form Daftar --}}
+    <div class="register-box">
+        <h3 class="text-center mb-4">Buat Akun HayuCukur</h3>
+        <form method="POST" action="{{ route('register') }}">
             @csrf
+
             <div class="mb-3">
-                <label for="nama_toko" class="form-label">Nama Barbershop</label>
-                <input type="text" class="form-control" id="nama_toko" name="nama_toko" required>
+                <label for="name" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" name="name" id="name" required placeholder="Contoh: Rofi Aziz">
             </div>
+
             <div class="mb-3">
-                <label for="pemilik" class="form-label">Nama Pemilik</label>
-                <input type="text" class="form-control" id="pemilik" name="pemilik" required>
+                <label for="email" class="form-label">Alamat Email</label>
+                <input type="email" class="form-control" name="email" id="email" required placeholder="email@example.com">
             </div>
-            <div class="mb-3">
-                <label for="alamat" class="form-label">Alamat Lengkap</label>
-                <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="telepon" class="form-label">Nomor Telepon</label>
-                <input type="tel" class="form-control" id="telepon" name="telepon" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Aktif</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
+
             <div class="mb-3">
                 <label for="password" class="form-label">Kata Sandi</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <input type="password" class="form-control" name="password" id="password" required placeholder="••••••••">
             </div>
-            <button type="submit" class="btn btn-primary w-100">Daftar Sekarang</button>
+
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
+                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required placeholder="••••••••">
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-register text-white fw-bold">Daftar</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <small>Sudah punya akun? <a href="/login-mitra">Login di sini</a></small>
+            </div>
         </form>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

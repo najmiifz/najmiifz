@@ -65,8 +65,7 @@
                 <span class="fw-bold fs-5">HayuCukur</span>
             </a>
             <div class="ms-auto">
-                <a href="/login" class="btn btn-outline-dark me-2">Login</a>
-                <a href="/register" class="btn btn-primary">Daftar</a>
+                <a href="/beranda" class="btn btn-primary">Beranda</a>
             </div>
         </div>
     </nav>

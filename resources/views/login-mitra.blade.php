@@ -44,7 +44,7 @@
 
     {{-- Form Login --}}
     <div class="login-box">
-        <h3 class="text-center mb-4">Login ke HayuCukur</h3>
+        <h3 class="text-center mb-4">Login ke HayuCukur Sebagai Mitra</h3>
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -63,7 +63,7 @@
             </div>
 
             <div class="text-center mt-3">
-                <small>Belum punya akun? <a href="/register">Daftar sekarang</a></small>
+                <small>Belum punya akun? <a href="/register-mitra">Daftar sekarang</a></small>
             </div>
         </form>
     </div>

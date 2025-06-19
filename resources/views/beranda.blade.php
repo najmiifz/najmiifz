@@ -30,7 +30,7 @@
 
         /* 2. Navbar */
         .navbar-brand img {
-            height: 45px;
+            height: 100px;
         }
 
         .hero {
@@ -159,11 +159,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="https://placehold.co/100x100/B22222/white?text=HC" alt="Logo Hayu Cukur" class="me-2 rounded-circle">
-                <span class="fw-bold fs-5">HayuCukur</span>
+               <img src="images/logocukur.png" class="me-2 rounded-circle">
+
             </a>
             <div class="ms-auto">
-                <a href="/pilih-akun-pelanggan" class="btn btn-primary">Booking sekarang</a>
+                <a href="/pilih-akun-pelanggan" class="btn btn-primary">Register</a>
             </div>
         </div>
     </nav>
