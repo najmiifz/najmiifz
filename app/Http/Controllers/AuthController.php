@@ -32,6 +32,9 @@ class AuthController extends Controller
     public function login(Request $request) {
         $credentials = $request->only('email','password');
         if(auth()->attempt($credentials)) {
+            if (auth()->user()->role == 'mitra') {
+                return redirect()->route('dashboard.mitra')->with('success', 'Login berhasil!');
+            }
             return redirect()->route('dashboard')->with('success', 'Login berhasil!');
         }
         return redirect()->back()->with('error','W.A.Y?');
@@ -39,5 +42,21 @@ class AuthController extends Controller
     public function logout(){
         Auth::logout();
         return redirect('/login');
+    }
+
+    public function mitraRegister(Request $request) {
+        $request->validate([
+            'name'=> 'required',
+            'email'=> 'required|email|unique:users',
+            'password'=> 'required|min:6|confirmed'
+        ]);
+
+        User::create([
+            'name'=> $request->name,
+            'email'=> $request->email,
+            'password'=> Hash::make($request->password),
+            'role' => 'mitra'
+        ]);
+        return redirect()->route('dashboard.mitra')->with('success','Registrasi Mitra Berhasil');
     }
 }

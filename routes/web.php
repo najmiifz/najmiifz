@@ -40,6 +40,7 @@ Route::get('/barber', function () {
 Route::get('/register-mitra', function () {
     return view('register-mitra');
 });
+Route::post('/register-mitra', [AuthController::class, 'mitraRegister'])->name(name: 'mitra.register');
 
 Route::get('/pilih-akun-pelanggan', function () {
     return view('pilih-akun-pelanggan');
@@ -60,7 +61,7 @@ Route::get('/riwayat-booking', function () {
 
 Route::get('/dashboard-mitra', function () {
     return view('dashboard-mitra');
-});
+})->name('dashboard.mitra')->middleware('auth');
 
 Route::get('/booking-mitra', function () {
     return view('booking-mitra');
