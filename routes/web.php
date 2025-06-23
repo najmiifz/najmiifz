@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,19 @@ Route::get('/logout', function(){
     Auth::logout();
     return redirect('/beranda')->with('success','Berhasil Logout');
 })->middleware('auth')->name('logout');
+
+//Auth Routes ~ Prevent Back History - Pelanggan
+Route::middleware(['auth', 'role:pelanggan', 'prevent-back-history'])->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+    Route::get('/riwayat-booking', [BookingController::class, 'riwayat'])->name('riwayat-booking');
+});
+
+//Auth Routes ~ Prevent Back History - Mitra
+Route::middleware(['auth', 'role:mitra', 'prevent-back-history'])->group(function () {
+    Route::get('/dashboard-mitra', [AuthController::class, 'dashboardmitra'])->name('dashboard-mitra');
+    Route::get('/booking-mitra', [BookingController::class, 'bookingmitra'])->name('booking-mitra');
+});
 
 Route::get('/booking', function () {
     return view('booking');

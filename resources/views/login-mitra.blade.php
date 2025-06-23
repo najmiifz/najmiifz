@@ -35,7 +35,7 @@
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="/">
+            <a class="navbar-brand d-flex align-items-center" href="/beranda">
                 <img src="https://placehold.co/100x100/B22222/ffffff?text=HC" alt="Logo" height="45" class="me-2 rounded-circle">
                 <span class="fw-bold fs-5">HayuCukur</span>
             </a>
@@ -51,11 +51,21 @@
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" name="email" id="email" required placeholder="email@example.com">
+                @error('email')
+                    <div class="text-danger">
+                        <span>{{ $message }}</span>
+                    </div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Kata Sandi</label>
                 <input type="password" class="form-control" name="password" id="password" required placeholder="••••••••">
+                @error('passsword')
+                    <div class="text-danger">
+                        <span>{{ $message }}</span>
+                    </div>
+                @enderror
             </div>
 
             <div class="d-grid mt-4">

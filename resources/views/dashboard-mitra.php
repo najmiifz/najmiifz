@@ -83,7 +83,7 @@
             <span>Mitra HayuCukur</span>
         </h4>
         <a href="#"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-        <a href="#"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
+        <a href="/booking-mitra"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
         <a href="#"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
         <a href="logout">
             <i class="bi bi-box-arrow-right me-1"></i>Logout

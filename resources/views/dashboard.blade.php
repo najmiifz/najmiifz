@@ -54,7 +54,7 @@
 
 <!-- Navbar (unchanged as requested) -->
 <nav class="navbar navbar-light bg-white shadow-sm px-4">
-    <a class="navbar-brand d-flex align-items-center" href="/webnajmi">
+    <a class="navbar-brand d-flex align-items-center" href="/beranda">
         <!-- Using a placeholder for the logo -->
         <img src="https://placehold.co/150x40/1a252f/ffffff?text=Hayu+Cukur&font=raleway" alt="Logo Hayu Cukur" style="height: 40px;" class="me-2 rounded">
         <strong style="font-weight: 700;">Hayu Cukur</strong>

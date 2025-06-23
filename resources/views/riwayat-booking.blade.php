@@ -106,7 +106,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light px-4 py-3">
-  <a class="navbar-brand d-flex align-items-center" href="/webnajmi">
+  <a class="navbar-brand d-flex align-items-center" href="/beranda">
     <img src="/images/logo.png" alt="Hayu Cukur" style="height: 36px;" class="me-2">
     Hayu Cukur
   </a>
