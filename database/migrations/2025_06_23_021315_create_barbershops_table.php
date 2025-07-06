@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('barbershops', function (Blueprint $table) {
             $table->id();
-            $table->string('barber_name');
-            $table->string('service_type');
-            $table->time('open-close_time');
+            $table->string('name'); // Nama barbershop
+            $table->string('location'); // Lokasi barbershop
+            $table->string('image')->nullable(); // URL gambar barbershop, optional
+            $table->float('rating')->default(0); // Rating barbershop, default 0
             $table->timestamps();
         });
     }
