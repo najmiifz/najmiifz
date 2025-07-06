@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('service_type');
-            $table->dateTime('Jam');
+            $table->dateTime('booking_time');
             $table->timestamps();
         });
     }

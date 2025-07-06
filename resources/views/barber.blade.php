@@ -52,6 +52,7 @@
             @php
                 $barbers = [
                     [
+                        'id' => 1,
                         'name' => "The Cut Garage",
                         'location' => "Jl. Sudirman No. 12",
                         'image' => "https://images.unsplash.com/photo-1599351431202-1811c4373413?q=80&w=1974&auto=format&fit=crop",
@@ -59,6 +60,7 @@
                         'review' => "250+"
                     ],
                     [
+                        'id' => 2,
                         'name' => "Gentlemen's Cut",
                         'location' => "Jl. Merdeka No. 55",
                         'image' => "https://images.unsplash.com/photo-1622288432454-2415b74c4424?q=80&w=1964&auto=format&fit=crop",
@@ -66,6 +68,7 @@
                         'review' => "400+"
                     ],
                     [
+                        'id' => 3,
                         'name' => "King's Barbershop",
                         'location' => "Jl. Dago No. 8",
                         'image' => "https://images.unsplash.com/photo-1605497788044-5a32c7ba384b?q=80&w=1974&auto=format&fit=crop",
@@ -85,7 +88,7 @@
                         <p class="text-muted mb-2"><i class="bi bi-geo-alt-fill me-1"></i> {{ $barber['location'] }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="fw-bold"><i class="bi bi-star-fill text-warning"></i> {{ $barber['rating'] }} ({{ $barber['review'] }})</span>
-                            <a href="#" class="btn btn-sm btn-outline-dark">Lihat Detail</a>
+                            <a href="{{ route('booking.create', $barber['id']) }}" class="btn btn-sm btn-outline-dark">Lihat Detail</a>
                         </div>
                     </div>
                 </div>

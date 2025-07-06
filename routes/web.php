@@ -43,9 +43,8 @@ Route::middleware(['auth', 'role:mitra', 'prevent-back-history'])->group(functio
     Route::get('/booking-mitra', [BookingController::class, 'bookingmitra'])->name('booking-mitra');
 });
 
-Route::get('/booking', function () {
-    return view('booking');
-});
+Route::get('/booking/{barbershop}', [BookingController::class, 'create'])->name('booking.create');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 
 Route::get('/barber', function () {
     return view('barber');
