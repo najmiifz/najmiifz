@@ -32,19 +32,9 @@
 <body>
 
     {{-- NAVBAR --}}
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="https://placehold.co/100x100/B22222/white?text=HC" alt="Logo Hayu Cukur" class="me-2 rounded-circle" height="45">
-                <span class="fw-bold fs-5">HayuCukur</span>
-            </a>
-            <div class="ms-auto">
-                <a href="/login" class="btn btn-outline-dark me-2">Login</a>
-                <a href="/register" class="btn btn-primary">Daftar</a>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.header')
 
+    {{-- CONTENT --}}
     <div class="container py-5">
         <h2 class="fw-bold text-center mb-4"><i class="bi bi-shop me-2"></i>Semua Barbershop di Bandung</h2>
         <div class="row">

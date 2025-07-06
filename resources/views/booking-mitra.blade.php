@@ -60,14 +60,7 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light px-4 py-3">
-  <a class="navbar-brand" href="/mitra/dashboard">
-    Hayu Cukur - Mitra
-  </a>
-  <div class="ms-auto">
-    <a href="/logout" class="btn btn-logout">Logout</a>
-  </div>
-</nav>
+@include('layouts.header')
 
 <!-- Dashboard -->
 <div class="container my-5">

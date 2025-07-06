@@ -67,41 +67,7 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="/dashboard">
-      <img src="https://placehold.co/150x40/B22222/ffffff?text=Hayu+Cukur&font=raleway" alt="Logo" height="40" class="me-2 rounded" />
-      <strong>Hayu Cukur</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item">
-          <a class="nav-link" href="/dashboard"><i class="bi bi-house-door-fill me-1"></i>Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/booking"><i class="bi bi-calendar-check-fill me-1"></i>Booking</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/riwayat"><i class="bi bi-clock-history me-1"></i>Riwayat</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle me-1"></i>
-            <span id="userNameNavbar">{{ Auth::user()->name }}</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/profil">Profil</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+@include('layouts.header')
 
 <!-- Step Progress -->
 <div class="step-progress">

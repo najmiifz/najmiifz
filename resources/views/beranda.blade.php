@@ -155,18 +155,7 @@
     </style>
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 sticky-top">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-               <img src="images/logocukur.png" class="me-2 rounded-circle">
-
-            </a>
-            <div class="ms-auto">
-                <a href="/pilih-akun-pelanggan" class="btn btn-primary">Register</a>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.header')
 
     @if(session('success'))
     <div class="container mt-4">
