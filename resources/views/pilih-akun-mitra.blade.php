@@ -65,7 +65,7 @@
                 <span class="fw-bold fs-5">HayuCukur</span>
             </a>
             <div class="ms-auto">
-                <a href="/beranda" class="btn btn-primary">Beranda</a>
+                <a href="/" class="btn btn-primary">Beranda</a>
             </div>
         </div>
     </nav>
@@ -76,7 +76,7 @@
         <p class="mb-4">Pilih salah satu untuk mulai menggunakan aplikasi.</p>
 
         <a href="/register-mitra" class="btn btn-option btn-daftar">Belum punya akun? Daftar Sekarang</a>
-        <a href="/login-mitra" class="btn btn-option btn-login">Sudah punya akun? Login</a>
+        <a href="{{ route('login') }}" class="btn btn-option btn-login">Sudah punya akun? Login</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

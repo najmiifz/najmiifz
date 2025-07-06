@@ -10,9 +10,17 @@ class BarbershopController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Barbershop::query();
+        if ($request->has('search')) {
+            $searchTerm =$request->input('search');
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('location', 'like', '%' . $searchTerm . '%');
+        }
+
+        $barbershops = $query->get();
+        return view('dashboard', ['barbershops' => $barbershops]);
     }
 
     /**
@@ -36,7 +44,7 @@ class BarbershopController extends Controller
      */
     public function show(Barbershop $barbershop)
     {
-        //
+        return view('barbershop.show', ['barbershop' => $barbershop]);
     }
 
     /**

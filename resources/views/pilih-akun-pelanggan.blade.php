@@ -65,7 +65,7 @@
                 <span class="fw-bold fs-5">HayuCukur</span>
             </a>
             <div class="ms-auto">
-                <a href="/beranda" class="btn btn-primary">Beranda</a>
+                <a href="/" class="btn btn-primary">Beranda</a>
             </div>
         </div>
     </nav>

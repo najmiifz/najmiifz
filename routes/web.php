@@ -1,89 +1,51 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\MitraDashboardController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 //Auth Routes ~ Home
-Route::get('/beranda', function () {
+Route::get('/', function () {
     return view('beranda');
+})->name('beranda');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/pilih-akun-pelanggan', function () {return view('pilih-akun-pelanggan');})->name('pilih-akun-pelanggan');
+    Route::get('/pilih-akun-mitra', function() {return view('pilih-akun-mitra');})->name('pilih-akun-mitra');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/register-mitra', function () {return view('register-mitra');});
+    Route::post('/register-mitra', [AuthController::class, 'mitraRegister'])->name(name: 'mitra.register');
 });
 
-//Auth Routes ~ Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-
-//Auth Routes ~ Register
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-
-//Auth Routes ~ Dash
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
-
-//Auth Routes ~ Logout
-Route::get('/logout', function(){
-    Auth::logout();
-    return redirect('/beranda')->with('success','Berhasil Logout');
-})->middleware('auth')->name('logout');
-
-//Auth Routes ~ Prevent Back History - Pelanggan
-Route::middleware(['auth', 'role:pelanggan', 'prevent-back-history'])->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/booking', [BookingController::class, 'index'])->name('booking');
-    Route::get('/riwayat-booking', [BookingController::class, 'riwayat'])->name('riwayat-booking');
+//Rute Terotentikasi
+Route::middleware('auth')->group(function (){
+    Route::get('/logout', function(){
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect()->route('beranda')->with('success', 'Berhasil Logout');
+    })->name('logout');
 });
 
-//Auth Routes ~ Prevent Back History - Mitra
-Route::middleware(['auth', 'role:mitra', 'prevent-back-history'])->group(function () {
-    Route::get('/dashboard-mitra', [AuthController::class, 'dashboardmitra'])->name('dashboard-mitra');
-    Route::get('/booking-mitra', [BookingController::class, 'bookingmitra'])->name('booking-mitra');
+//Rute Pelanggan
+Route::middleware(['role:pelanggan'])->group(function (){
+    Route::get('/dashboard', [BarbershopController::class, 'index'])->name('dashboard'); // Dashboard Pelanggan
+    Route::get('/barbershop/{barbershop}', [BarbershopController::class, 'show'])->name('barbershop.show'); // Detail Barbershop
+    Route::get('/booking/create/{barbershop}', [BookingController::class, 'create'])->name('booking.create'); // Form Booking
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store'); // Proses Booking
+    Route::get('/riwayat-booking', [BookingController::class, 'riwayat'])->name('riwayat-booking'); // Riwayat Booking
 });
 
-Route::get('/booking/{barbershop}', [BookingController::class, 'create'])->name('booking.create');
-Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
-
-Route::get('/barber', function () {
-    return view('barber');
+//Rute Mitra
+Route::middleware(['role:mitra'])->group(function (){
+    Route::get('/dashboard-mitra', [MitraDashboardController::class, 'index'])->name('dashboard.mitra'); // Dashboard Mitra
+    Route::post('/mitra/barbershop', [MitraDashboardController::class,'store'])->name('mitra.barbershop.store'); // Proses Tambah Barbershop
 });
-
-Route::get('/register-mitra', function () {
-    return view('register-mitra');
-});
-Route::post('/register-mitra', [AuthController::class, 'mitraRegister'])->name(name: 'mitra.register');
-
-Route::get('/pilih-akun-pelanggan', function () {
-    return view('pilih-akun-pelanggan');
-});
-
-
-Route::get('/login-mitra', function () {
-    return view('login-mitra');
-});
-
-Route::get('/pilih-akun-mitra', function () {
-    return view('pilih-akun-mitra');
-});
-
-Route::get('/riwayat-booking', function () {
-    return view('riwayat-booking');
-});
-
-Route::get('/dashboard-mitra', function () {
-    return view('dashboard-mitra');
-})->name('dashboard.mitra')->middleware('auth');
-
-Route::get('/booking-mitra', function () {
-    return view('booking-mitra');
-});
-
-
-route::get('person', [PersonController::class, 'index'])->name('person.index');
-route::get('person/create', [PersonController::class, 'create'])->name('person.create');
-route::post('person/store',[PersonController::class, 'store'])->name('person.store');
-route::get('person/{arg}',[PersonController::class, 'show'])->name('person.show');
-
 
