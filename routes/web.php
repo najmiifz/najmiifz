@@ -46,5 +46,26 @@ Route::middleware(['role:pelanggan'])->group(function (){
 Route::middleware(['role:mitra'])->group(function (){
     Route::get('/dashboard-mitra', [MitraDashboardController::class, 'index'])->name('dashboard.mitra'); // Dashboard Mitra
     Route::post('/mitra/barbershop', [MitraDashboardController::class,'store'])->name('mitra.barbershop.store'); // Proses Tambah Barbershop
+    Route::get('/booking-mitra', function () {
+    return view('booking-mitra');
+})->name('booking-mitra');
+Route::get('/kelola-barber', function () {
+    return view('kelola-barber');
+})->name('kelola-barber');
+Route::get('/detail-booking-mitra', function () {
+    return view('detail-booking-mitra');
+})->name('detail-booking-mitra');
+Route::get('/detail-barber-mitra', function () {
+    return view('detail-barber-mitra');
+})->name('detail-barber-mitra');
+
+
+
 });
+
+
+
+
+
+
 
