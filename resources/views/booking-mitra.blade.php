@@ -1,118 +1,141 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Mitra - Hayu Cukur</title>
+  <meta charset="UTF-8">
+  <title>Bookingan Pelanggan - Mitra Hayu Cukur</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
     body {
-      background-color: #fffef8;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
     }
 
-    .navbar {
-      background-color: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    .sidebar {
+      width: 250px;
+      background-color: #B22222;
+      color: white;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      position: fixed;
     }
 
-    .navbar-brand {
+    .sidebar h4 {
       font-weight: bold;
-      color: #1a252f;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
     }
 
-    .btn-logout {
-      background-color: #dc3545;
-      color: #fff;
-      border-radius: 25px;
-      padding: 6px 16px;
-      font-weight: 500;
+    .sidebar h4 img {
+      width: 35px;
+      height: 35px;
+      margin-right: 10px;
+      border-radius: 50%;
     }
 
-    .section-title {
-      font-weight: bold;
-      font-size: 1.8rem;
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
       margin-bottom: 1rem;
-      color: #1a252f;
+      font-size: 1.1rem;
     }
 
-    .dashboard-card {
-      border-radius: 16px;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #eee;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    .sidebar a:hover {
+      background-color: #9f1f1f;
+      padding: 0.5rem;
+      border-radius: 8px;
     }
 
-    .dashboard-card .btn {
-      border-radius: 20px;
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
     }
 
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: #d62828;
+    .table-container {
+      background-color: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    th {
+      background-color: #B22222;
+      color: white;
     }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
-@include('layouts.header')
-
-<!-- Dashboard -->
-<div class="container my-5">
-  <h2 class="section-title text-center">Dashboard Mitra</h2>
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <div class="card-icon">
-          <i class="bi bi-calendar-check"></i>
-        </div>
-        <h5>Total Booking</h5>
-        <p class="text-muted">12 Booking</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <div class="card-icon">
-          <i class="bi bi-bar-chart-line"></i>
-        </div>
-        <h5>Selesai</h5>
-        <p class="text-muted">9 Booking</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <div class="card-icon">
-          <i class="bi bi-scissors"></i>
-        </div>
-        <h5>Kelola Barbershop</h5>
-        <a href="/mitra/barbershop" class="btn btn-outline-dark mt-2">Edit Info</a>
-      </div>
-    </div>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4><img src="images/logocukur.png" alt="Logo">Mitra HayuCukur</h4>
+    <a href="/dashboard-mitra"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+    <a href="/booking-mitra"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
+    <a href="/kelola-barber-mitra"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+    <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
-  <!-- Booking Hari Ini -->
-  <div class="mt-5">
-    <h4 class="fw-bold mb-3">Booking Hari Ini</h4>
-    <div class="dashboard-card">
-      <p class="mb-1"><strong>Nama:</strong> Rofi A. Taufik</p>
-      <p class="mb-1"><strong>Layanan:</strong> Fade Haircut</p>
-      <p class="mb-3"><strong>Jam:</strong> 14:00 WIB</p>
-      <a href="/mitra/booking/1" class="btn btn-outline-danger btn-sm">Detail</a>
-      <a href="#" class="btn btn-success btn-sm">Selesai</a>
-      <a href="#" class="btn btn-secondary btn-sm">Batal</a>
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</h2>
+    <p class="text-muted">Berikut adalah daftar pelanggan yang telah melakukan booking di barbershop Anda.</p>
+
+    <div class="table-container mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Pelanggan</th>
+            <th>Tanggal Booking</th>
+            <th>Jam</th>
+            <th>Layanan</th>
+            <th>Status</th>
+            <th>Pembayaran</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Aldi Pratama</td>
+            <td>03 Juli 2025</td>
+            <td>14:00</td>
+            <td>Potong Rambut</td>
+            <td><span class="badge bg-warning">Menunggu</span></td>
+            <td><span class="badge bg-info text-dark">Transfer QRIS</span></td>
+            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Budi Santoso</td>
+            <td>03 Juli 2025</td>
+            <td>15:00</td>
+            <td>Cukur Kumis</td>
+            <td><span class="badge bg-success">Selesai</span></td>
+            <td><span class="badge bg-secondary">Bayar di Tempat</span></td>
+            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Chika Dewi</td>
+            <td>04 Juli 2025</td>
+            <td>10:00</td>
+            <td>Potong & Cuci</td>
+            <td><span class="badge bg-danger">Dibatalkan</span></td>
+            <td><span class="badge bg-secondary">Bayar di Tempat</span></td>
+            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-</div>
-
-<!-- Footer -->
-<footer class="text-center text-muted py-4">
-  <p>&copy; 2025 Hayu Cukur. All Rights Reserved.</p>
-</footer>
 
 </body>
 </html>
