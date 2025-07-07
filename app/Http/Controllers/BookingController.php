@@ -33,6 +33,11 @@ class BookingController extends Controller
             'total_price' => $request->total_price, // total harga
             'status' => 'pending', // Default status
         ]);
-        return redirect()->route('dashboard')->with('success', 'Booking berhasil dibuat');
+        return redirect()->route('riwayat-booking')->with('success', 'Booking berhasil dibuat');
+    }
+
+    public function riwayat(){
+        $bookings = Booking::where('user_id', Auth::id())->latest()->get();
+        return view('riwayat-booking', ['bookings' => $bookings]);
     }
 }

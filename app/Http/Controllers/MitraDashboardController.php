@@ -13,6 +13,11 @@ class MitraDashboardController extends Controller
         return view('dashboard-mitra');
     }
 
+    public function bookings(){
+        $bookings = \App\Models\Booking::latest()->get();
+        return view('booking-mitra', ['bookings' => $bookings]);
+    }
+
     public function store(Request $request)
     {
         // Proses Tambah Barbershop
