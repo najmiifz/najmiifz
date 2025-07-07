@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MitraDashboardController;
-use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
