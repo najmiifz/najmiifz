@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barbershop;
+use App\Models\Booking;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +24,6 @@ class MitraDashboardController extends Controller
             return redirect()->route('mitra.barbershop.edit', $existingBarbershop->id);
         }
         return view('kelola-barber');
-    }
-    public function bookings(){
-        $bookings = \App\Models\Booking::latest()->get();
-        return view('booking-mitra', ['bookings' => $bookings]);
     }
 
     public function store(Request $request)
@@ -98,4 +95,35 @@ class MitraDashboardController extends Controller
 
         return redirect()->route('mitra.barbershop.edit', $barbershop->id)->with('success', 'Barbershop berhasil diperbarui!');
     }
+    public function showBookings(){
+        $barbershop =Barbershop::where('user_id', Auth::id())->first(); // Ambil barbershop milik mitra yang sedang login
+        if (!$barbershop){
+            return redirect()->route('dashboard.mitra')->with('error', 'Anda belum memiliki barbershop. Silakan buat barbershop terlebih dahulu.');
+        }
+        $bookings = Booking::where('barbershop_id', $barbershop->id)
+                            ->with('user') // Mengambil relasi customer untuk menampilkan nama pelanggan
+                            ->latest()
+                            ->get(); // Ambil semua booking yang terkait dengan barbershop ini
+
+        return view('booking-mitra', compact('bookings')); // Tampilkan daftar booking pada mitra
+    }
+    public function updateBookingStatus(Request $request, Booking $booking){
+        $this->authorizeBookingManagement($booking); // memastikan mitra memiliki izin untuk mengelola booking ini
+        $request->validate([
+            'status' => 'required|in:Menunggu,Diproses,Selesai,Dibatalkan',
+        ]);
+        $booking->update([
+            'status' => $request->status
+        ]);
+        return back()->with('success', 'Status Booking sudah diperbarui!');
+    }
+
+    private function authorizeBookingManagement(Booking $booking){
+        $barbershop = Barbershop::where('user_id', Auth::id())->first();
+        if (!$barbershop || $booking->barbershop_id !== $barbershop->id){
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengedit Booking');
+        }
+    }
+
 }
+

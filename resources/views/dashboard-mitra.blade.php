@@ -85,9 +85,9 @@
             <a href="{{ route('dashboard.mitra') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
 
             {{-- Updated Booking Link --}}
-            <a href="#"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
+            <a href="{{ route('mitra.bookings.index') }}"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
 
-            {{-- Updated and "Smart" Kelola Link --}}
+            {{-- Dynamic Barbershop Management Link --}}
             @if ($barbershop)
                 <a href="{{ route('mitra.barbershop.edit', $barbershop->id) }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
             @else
@@ -115,7 +115,7 @@
                         <h5><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</h5>
                         <p>Lihat semua daftar bookingan pelanggan yang masuk ke barbershop kamu.</p>
                         {{-- Updated Booking Link --}}
-                        <a href="#" class="btn btn-danger">Lihat Bookingan</a>
+                        <a href="{{ route('mitra.bookings.index') }}" class="btn btn-danger">Lihat Bookingan</a>
                     </div>
                 </div>
 

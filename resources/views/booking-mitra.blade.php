@@ -5,7 +5,6 @@
   <title>Bookingan Pelanggan - Mitra Hayu Cukur</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -66,75 +65,80 @@
     }
 
     th {
-      background-color: #B22222;
+      background-color: #343a40;
       color: white;
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
   <div class="sidebar">
-    <h4><img src="images/logocukur.png" alt="Logo">Mitra HayuCukur</h4>
-    <a href="/dashboard-mitra"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-    <a href="/booking-mitra"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
-    <a href="/kelola-barber-mitra"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+    <h4><img src="/images/logocukur.png" alt="Logo">Mitra HayuCukur</h4>
+    <a href="{{ route('dashboard.mitra') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+    <a href="{{ route('mitra.bookings.index') }}"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
+    @if(Auth::user()->barbershop)
+        <a href="{{ route('mitra.barbershop.edit', Auth::user()->barbershop->id) }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+    @else
+        <a href="{{ route('mitra.barbershop.create') }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+    @endif
     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><i class="bi bi-box-arrow-right"></i> Logout</a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
       @csrf
     </form>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content">
     <h2><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</h2>
     <p class="text-muted">Berikut adalah daftar pelanggan yang telah melakukan booking di barbershop Anda.</p>
 
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <div class="table-container mt-4">
-      <table class="table table-bordered">
+      <table class="table table-hover align-middle">
         <thead>
           <tr>
-            <th>No</th>
             <th>Nama Pelanggan</th>
-            <th>Tanggal Booking</th>
-            <th>Jam</th>
-            <th>Layanan</th>
-            <th>Status</th>
-            <th>Pembayaran</th>
-            <th>Aksi</th>
+            <th>Tanggal & Waktu</th>
+            <th>Status Saat Ini</th>
+            <th width="30%">Ubah Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Aldi Pratama</td>
-            <td>03 Juli 2025</td>
-            <td>14:00</td>
-            <td>Potong Rambut</td>
-            <td><span class="badge bg-warning">Menunggu</span></td>
-            <td><span class="badge bg-info text-dark">Transfer QRIS</span></td>
-            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Budi Santoso</td>
-            <td>03 Juli 2025</td>
-            <td>15:00</td>
-            <td>Cukur Kumis</td>
-            <td><span class="badge bg-success">Selesai</span></td>
-            <td><span class="badge bg-secondary">Bayar di Tempat</span></td>
-            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Chika Dewi</td>
-            <td>04 Juli 2025</td>
-            <td>10:00</td>
-            <td>Potong & Cuci</td>
-            <td><span class="badge bg-danger">Dibatalkan</span></td>
-            <td><span class="badge bg-secondary">Bayar di Tempat</span></td>
-            <td><a href="/detail-booking-mitra" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i> Detail</a></td>
-          </tr>
+          @forelse ($bookings as $booking)
+            <tr>
+              <td>{{ $booking->user->name ?? 'Pelanggan Dihapus' }}</td>
+              <td>{{ \Carbon\Carbon::parse($booking->booking_time)->format('d F Y, H:i') }}</td>
+              <td>
+                <span class="badge
+                    @if($booking->status == 'Selesai') bg-success
+                    @elseif($booking->status == 'Diproses') bg-info text-dark
+                    @elseif($booking->status == 'Dibatalkan') bg-danger
+                    @else bg-warning text-dark @endif">
+                    {{ $booking->status }}
+                </span>
+              </td>
+              <td>
+                <form action="{{ route('mitra.bookings.status.update', $booking->id) }}" method="POST">
+                    @csrf
+                    <div class="input-group">
+                        <select name="status" class="form-select">
+                            <option value="Menunggu" @if($booking->status == 'Menunggu') selected @endif>Menunggu</option>
+                            <option value="Diproses" @if($booking->status == 'Diproses') selected @endif>Diproses</option>
+                            <option value="Selesai" @if($booking->status == 'Selesai') selected @endif>Selesai</option>
+                            <option value="Dibatalkan" @if($booking->status == 'Dibatalkan') selected @endif>Dibatalkan</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-dark">Update</button>
+                    </div>
+                </form>
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="4" class="text-center p-4">Belum ada data bookingan.</td>
+            </tr>
+          @endforelse
         </tbody>
       </table>
     </div>
