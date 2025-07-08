@@ -4,9 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MitraDashboardController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+
 
 //Routes ~ Home
 Route::get('/', function () {
@@ -14,8 +15,14 @@ Route::get('/', function () {
 })->name('beranda');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/pilih-akun-pelanggan', function () {return view('pilih-akun-pelanggan');})->name('pilih-akun-pelanggan');
-    Route::get('/pilih-akun-mitra', function() {return view('pilih-akun-mitra');})->name('pilih-akun-mitra');
+    Route::get('/pilih-akun-pelanggan', function () {
+        $registerLink = route('register', ['role' =>'pelanggan']);
+        return view('pilih-akun-pelanggan', compact('registerLink'));
+    })->name('pilih-akun-pelanggan');
+    Route::get('/pilih-akun-mitra', function() {
+        $registerLink = route('register', ['role' => 'mitra']);
+        return view('pilih-akun-mitra', compact('registerLink')); //
+    })->name('pilih-akun-mitra');
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register/{role?}', [AuthController::class, 'showRegister'])->name('register');
@@ -33,7 +40,7 @@ Route::middleware('auth')->group(function (){
 });
 
 //Rute Pelanggan
-Route::middleware(['role:pelanggan'])->group(function (){
+Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::get('/dashboard', [BarbershopController::class, 'index'])->name('dashboard'); // Dashboard Pelanggan
     Route::get('/barbershop/{barbershop}', [BarbershopController::class, 'show'])->name('barbershop.show'); // Detail Barbershop
     Route::get('/booking', [BookingController::class, 'riwayat'])->name('booking.riwayat'); // Riwayat Booking
@@ -45,19 +52,25 @@ Route::middleware(['role:pelanggan'])->group(function (){
 //Rute Mitra
 Route::middleware(['role:mitra'])->group(function (){
     Route::get('/dashboard-mitra', [MitraDashboardController::class, 'index'])->name('dashboard.mitra'); // Dashboard Mitra
+
+    // Rute Manajemen Barbershop
+    Route::get('/mitra/barbershop/create', [MitraDashboardController::class, 'create'])->name('mitra.barbershop.create'); // Form Tambah Barbershop
     Route::post('/mitra/barbershop', [MitraDashboardController::class,'store'])->name('mitra.barbershop.store'); // Proses Tambah Barbershop
-    Route::get('/booking-mitra', function () {
-    return view('booking-mitra');
-})->name('booking-mitra');
-Route::get('/kelola-barber', function () {
-    return view('kelola-barber');
-})->name('kelola-barber');
-Route::get('/detail-booking-mitra', function () {
-    return view('detail-booking-mitra');
-})->name('detail-booking-mitra');
-Route::get('/detail-barber-mitra', function () {
-    return view('detail-barber-mitra');
-})->name('detail-barber-mitra');
+    Route::get('/mitra/barbershop/{barbershop}/edit', [MitraDashboardController::class, 'edit'])->name('mitra.barbershop.edit'); // Edit Barbershop
+    Route::post('/mitra/barbershop/{barbershop}', [MitraDashboardController::class, 'update'])->name('mitra.barbershop.update'); // Proses Update Barbershop
+
+//     Route::get('/booking-mitra', function () {
+//     return view('booking-mitra');
+// })->name('booking-mitra');
+// Route::get('/kelola-barber', function () {
+//     return view('kelola-barber');
+// })->name('kelola-barber');
+// Route::get('/detail-booking-mitra', function () {
+//     return view('detail-booking-mitra');
+// // })->name('detail-booking-mitra');
+// Route::get('/detail-barber-mitra', function () {
+//     return view('detail-barber-mitra');
+// })->name('detail-barber-mitra');
 
 
 

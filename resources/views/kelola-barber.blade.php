@@ -101,104 +101,65 @@
 
   <!-- Main Content -->
   <div class="main-content">
-    <div class="form-container">
-      <h4><i class="bi bi-scissors"></i> Kelola Barbershop</h4>
-      <form method="POST" enctype="multipart/form-data">
+        <div class="form-container">
+            <h4><i class="bi bi-scissors"></i> Tambah Barbershop Baru</h4>
+            <form method="POST" action="{{ route('mitra.barbershop.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                <label for="nama" class="form-label">Nama Barbershop</label>
+                <input type="text" id="nama" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <textarea id="alamat" name="address" class="form-control" rows="2" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="kota" class="form-label">Kota</label>
+                    <input type="text" id="kota" name="location" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="jam_buka" class="form-label">Jam Buka</label>
+                    <input type="time" id="jam_buka" name="open_time" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="jam_tutup" class="form-label">Jam Tutup</label>
+                    <input type="time" id="jam_tutup" name="close_time" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="gambar" class="form-label">Foto Barbershop</label>
+                    <input type="file" id="gambar" name="image" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi Singkat</label>
+                <textarea id="deskripsi" name="description" class="form-control" rows="3" required></textarea>
+                </div>
 
-        <!-- Identitas Barbershop -->
-        <div class="mb-3">
-          <label for="nama" class="form-label">Nama Barbershop</label>
-          <input type="text" id="nama" name="nama" class="form-control" required>
+                <hr>
+                <h4>Layanan</h4>
+                <div id="services-container">
+                    </div>
+                <button type="button" id="add-service-btn" class="btn btn-secondary mt-2">Tambah Layanan</button>
+                <hr>
+
+                <button type="submit" class="btn btn-danger w-100 mt-3">
+                <i class="bi bi-check-circle-fill me-2"></i> Simpan Barbershop
+                </button>
+            </form>
         </div>
-
-        <div class="mb-3">
-          <label for="alamat" class="form-label">Alamat</label>
-          <textarea id="alamat" name="alamat" class="form-control" rows="2" required></textarea>
-        </div>
-
-        <div class="mb-3">
-          <label for="kota" class="form-label">Kota</label>
-          <select id="kota" name="kota" class="form-select" required>
-            <option value="">-- Pilih Kota --</option>
-            <option>Bandung</option>
-            <option>Bekasi</option>
-            <option>Jakarta Selatan</option>
-            <option>Jakarta Timur</option>
-            <option>Surabaya</option>
-            <option>Makassar</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="jam_buka" class="form-label">Jam Buka</label>
-          <input type="time" id="jam_buka" name="jam_buka" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="jam_tutup" class="form-label">Jam Tutup</label>
-          <input type="time" id="jam_tutup" name="jam_tutup" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="gambar" class="form-label">Foto Barbershop</label>
-          <input type="file" id="gambar" name="gambar" class="form-control">
-        </div>
-
-        <!-- Deskripsi -->
-        <div class="mb-3">
-          <label for="deskripsi" class="form-label">Deskripsi Singkat</label>
-          <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Contoh: Barbershop dengan gaya kekinian, nyaman, dan pelayanan profesional." required></textarea>
-        </div>
-
-        <!-- Layanan -->
-        <div class="mb-4">
-          <label class="form-label fw-bold">Layanan yang Ditawarkan</label>
-          <div class="row g-3">
-
-            <!-- Cukur Rambut -->
-            <div class="col-md-4">
-              <div class="card-layanan">
-                <h6 class="fw-bold">Cukur Rambut</h6>
-                <label>Harga (Rp)</label>
-                <input type="number" name="layanan[cukur_rambut][harga]" class="form-control mb-2" required>
-                <label>Durasi (menit)</label>
-                <input type="number" name="layanan[cukur_rambut][durasi]" class="form-control" required>
-              </div>
-            </div>
-
-            <!-- Hairstyling -->
-            <div class="col-md-4">
-              <div class="card-layanan">
-                <h6 class="fw-bold">Hairstyling</h6>
-                <label>Harga (Rp)</label>
-                <input type="number" name="layanan[hairstyling][harga]" class="form-control mb-2" required>
-                <label>Durasi (menit)</label>
-                <input type="number" name="layanan[hairstyling][durasi]" class="form-control" required>
-              </div>
-            </div>
-
-            <!-- Creambath -->
-            <div class="col-md-4">
-              <div class="card-layanan">
-                <h6 class="fw-bold">Creambath</h6>
-                <label>Harga (Rp)</label>
-                <input type="number" name="layanan[creambath][harga]" class="form-control mb-2" required>
-                <label>Durasi (menit)</label>
-                <input type="number" name="layanan[creambath][durasi]" class="form-control" required>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Tombol Simpan -->
-        <button type="submit" class="btn btn-danger w-100 mt-3">
-          <i class="bi bi-check-circle-fill me-2"></i> Simpan Perubahan
-        </button>
-
-      </form>
     </div>
-  </div>
-
-</body>
+        <script>
+        document.getElementById('add-service-btn').addEventListener('click', function() {
+            const container = document.getElementById('services-container');
+            const serviceDiv = document.createElement('div');
+            serviceDiv.classList.add('row', 'g-3', 'mb-2', 'align-items-center');
+            serviceDiv.innerHTML = `
+                <div class="col-md-5"><input type="text" name="service_name[]" class="form-control" placeholder="Nama Layanan" required></div>
+                <div class="col-md-3"><input type="number" name="service_price[]" class="form-control" placeholder="Harga (Rp)" required></div>
+                <div class="col-md-3"><input type="number" name="service_duration[]" class="form-control" placeholder="Durasi (menit)" required></div>
+                <div class="col-md-1"><button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">X</button></div>
+            `;
+            container.appendChild(serviceDiv);
+        });
+        </script>
+    </body>
 </html>

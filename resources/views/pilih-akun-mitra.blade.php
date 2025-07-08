@@ -75,7 +75,7 @@
         <h2 class="mb-4">Gabung ke HayuCukur sebagai mitra</h2>
         <p class="mb-4">Pilih salah satu untuk mulai menggunakan aplikasi.</p>
 
-        <a href="/register-mitra" class="btn btn-option btn-daftar">Belum punya akun? Daftar Sekarang</a>
+        <a href="{{ $registerLink }}" class="btn btn-option btn-daftar">Belum punya akun? Daftar Sekarang</a>
         <a href="{{ route('login') }}" class="btn btn-option btn-login">Sudah punya akun? Login</a>
     </div>
 

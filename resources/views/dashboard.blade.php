@@ -38,15 +38,15 @@
         <section>
             <h3 class="fw-bold mb-4">Pilihan Untukmu</h3>
             <div class="row g-4">
-                @forelse($barbershops as $barber)
+                @forelse($barbershops as $barbershop)
                     <div class="col-lg-3 col-md-6">
                         <div class="card h-100 shadow-sm border-0 card-barber">
-                            <img src="{{ $barber->image_url ?? 'https://placehold.co/600x400' }}" class="card-img-top" alt="{{ $barber->name }}" style="height: 200px; object-fit: cover;">
+                            <img src="{{ asset('storage/' . $barbershop->image) }}" class="card-img-top" alt="{{ $barbershop->name }}" style="height: 200px; object-fit: cover;">
                             <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold">{{ $barber->name }}</h5>
-                                <p class="card-text text-muted"><i class="bi bi-geo-alt-fill"></i> {{ $barber->location }}</p>
+                                <h5 class="card-title fw-bold">{{ $barbershop->name }}</h5>
+                                <p class="card-text text-muted"><i class="bi bi-geo-alt-fill"></i> {{ $barbershop->location }}</p>
                                 <div class="mt-auto">
-                                    <a href="{{ route('barbershop.show', $barber->id) }}" class="btn btn-danger w-100">Lihat Detail</a>
+                                    <a href="{{ route('barbershop.show', $barbershop->id) }}" class="btn btn-danger w-100">Lihat Detail</a>
                                 </div>
                             </div>
                         </div>
@@ -54,9 +54,7 @@
                 @empty
                     <div class="col-12">
                         <div class="text-center py-5">
-                            <h5>Oops! Barbershop tidak ditemukan.</h5>
-                            <p class="text-muted">Coba gunakan kata kunci lain.</p>
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-danger mt-3">Tampilkan Semua Barbershop</a>
+                            <h5>Oops! Belum ada barbershop yang terdaftar.</h5>
                         </div>
                     </div>
                 @endforelse

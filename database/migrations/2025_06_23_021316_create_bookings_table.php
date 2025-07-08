@@ -16,10 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key ke tabel users
             $table->foreignId('barbershop_id')->constrained()->onDelete('cascade'); // Foreign key ke tabel barbershops
             $table->string('name'); // Nama lengkap pelanggan
-            $table->string('service_type'); // Jenis layanan yang dipesan
             $table->dateTime('booking_time'); // Waktu booking
             $table->decimal('total_price', 10, 2); // Total harga layanan
-            $table->string('status')->default('pending'); // Status booking, default 'pending
+            $table->enum('status', ['Menunggu', 'Diproses', 'Selesai', 'Dibatalkan'])->default('Menunggu'); // Status booking, default 'Menunggu'
             $table->timestamps();
         });
     }

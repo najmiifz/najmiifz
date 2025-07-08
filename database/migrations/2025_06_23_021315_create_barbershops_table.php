@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('barbershops', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key untuk user yang memiliki barbershop
             $table->string('name'); // Nama barbershop
+            $table->string('address'); // Alamat barbershop
             $table->string('location'); // Lokasi barbershop
+            $table->string('description')->nullable(); // Deskripsi barbershop, optional
+            $table->time('open_time'); // Jam buka barbershop
+            $table->time('close_time'); // Jam tutup barbershop
             $table->string('image')->nullable(); // URL gambar barbershop, optional
-            $table->float('rating')->default(0); // Rating barbershop, default 0
+            $table->json('services')->nullable(); // Layanan yang ditawarkan, disimpan sebagai JSON
             $table->timestamps();
         });
     }

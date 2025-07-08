@@ -84,48 +84,43 @@
 
   <!-- Main Content -->
   <div class="main-content">
-    <div class="content-box">
-      <h4 class="text-success"><i class="bi bi-check-circle-fill"></i> Barbershop Berhasil Disimpan!</h4>
-      <p class="text-muted">Berikut adalah detail barbershop Anda:</p>
+        <div class="content-box">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-      <!-- Foto Barbershop di Atas -->
-      <div class="text-center mt-3 mb-4">
-        <img src="/uploads/barberganteng.jpg" alt="Foto Barbershop" class="img-fluid rounded shadow-sm" style="max-width: 350px;">
-      </div>
+            <h4><i class="bi bi-pencil-square"></i> Edit Detail Barbershop</h4>
+            <form method="POST" action="{{ route('mitra.barbershop.update', $barbershop->id) }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT') <div class="text-center my-3">
+                    <img src="{{ asset('storage/' . $barbershop->image) }}" alt="Foto Barbershop" class="img-fluid rounded shadow-sm" style="max-width: 350px;">
+                </div>
 
-      <!-- Info Barbershop -->
-      <div>
-        <p><span class="info-label">Nama Barbershop:</span> Barber Ganteng</p>
-        <p><span class="info-label">Alamat:</span> Jl. Sukajadi No.123, Bandung</p>
-        <p><span class="info-label">Kota:</span> Bandung</p>
-        <p><span class="info-label">Jam Operasional:</span> 09:00 - 20:00</p>
-        <p><span class="info-label">Deskripsi:</span> Barbershop kekinian dengan suasana nyaman, pelayanan profesional, dan hasil potongan yang memuaskan pelanggan dari segala usia.</p>
-      </div>
+                <div class="mb-3">
+                <label for="nama" class="form-label">Nama Barbershop</label>
+                <input type="text" id="nama" name="name" class="form-control" value="{{ $barbershop->name }}" required>
+                </div>
+                <hr>
+                <h4>Layanan</h4>
+                <div id="services-container">
+                    @foreach($barbershop->services as $service)
+                    <div class="row g-3 mb-2 align-items-center">
+                        <div class="col-md-5"><input type="text" name="service_name[]" class="form-control" value="{{ $service['name'] }}" required></div>
+                        <div class="col-md-3"><input type="number" name="service_price[]" class="form-control" value="{{ $service['price'] }}" required></div>
+                        <div class="col-md-3"><input type="number" name="service_duration[]" class="form-control" value="{{ $service['duration'] }}" required></div>
+                        <div class="col-md-1"><button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">X</button></div>
+                    </div>
+                    @endforeach
+                </div>
+                <button type="button" id="add-service-btn" class="btn btn-secondary mt-2">Tambah Layanan</button>
+                <hr>
 
-      <!-- Layanan -->
-      <h5 class="section-title">Layanan Tersedia</h5>
-      <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Cukur Rambut
-          <span>Rp25.000 / 30 menit</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Hairstyling
-          <span>Rp30.000 / 40 menit</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          Creambath
-          <span>Rp35.000 / 45 menit</span>
-        </li>
-      </ul>
-
-      <!-- Tombol Aksi -->
-      <div class="mt-4">
-        <a href="#" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle"></i> Kembali</a>
-        <a href="#" class="btn btn-danger"><i class="bi bi-pencil-square"></i> Edit Barbershop</a>
-      </div>
+                <button type="submit" class="btn btn-danger w-100 mt-3">
+                    <i class="bi bi-save me-2"></i> Simpan Perubahan
+                </button>
+            </form>
+        </div>
     </div>
-  </div>
 
 </body>
 </html>
