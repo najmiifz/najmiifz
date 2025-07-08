@@ -6,8 +6,9 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MitraDashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-//Auth Routes ~ Home
+//Routes ~ Home
 Route::get('/', function () {
     return view('beranda');
 })->name('beranda');
@@ -17,18 +18,16 @@ Route::middleware('guest')->group(function () {
     Route::get('/pilih-akun-mitra', function() {return view('pilih-akun-mitra');})->name('pilih-akun-mitra');
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/register-mitra', function () {return view('register-mitra');});
-    Route::post('/register-mitra', [AuthController::class, 'mitraRegister'])->name(name: 'mitra.register');
+    Route::get('/register/{role?}', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
 
 //Rute Terotentikasi
 Route::middleware('auth')->group(function (){
-    Route::get('/logout', function(){
+    Route::post('/logout', function(Request $request){
         Auth::logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        $request->session()->invalidate(); // Menghapus session untuk keamanan
+        $request->session()->regenerateToken();
         return redirect()->route('beranda')->with('success', 'Berhasil Logout');
     })->name('logout');
 });
