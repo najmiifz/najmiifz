@@ -111,7 +111,10 @@
     Hayu Cukur
   </a>
   <div class="ms-auto">
-    <a href="/logout" class="btn btn-login">Logout</a>
+    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()" class="btn btn-login">Logout</a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+      @csrf
+    </form>
   </div>
 </nav>
 

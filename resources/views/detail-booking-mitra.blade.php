@@ -132,7 +132,10 @@
     <a href="/dashboard-mitra"><i class="bi bi-house-door-fill"></i> Dashboard</a>
     <a href="/booking-mitra"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
     <a href="/kelola-barber-mitra"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
-    <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <a href="{{ route("logout") }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+      @csrf
+    </form>
   </div>
 
   <!-- Main Content -->

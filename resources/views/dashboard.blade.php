@@ -14,9 +14,12 @@
     @include('layouts.header')
     <div class="ms-auto">
         @auth
-            <a href="{{ route('logout') }}" class="btn btn-outline-danger me-2">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()" class="btn btn-outline-danger me-2">
                 <i class="bi bi-box-arrow-right me-1"></i>Logout
             </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         @endauth
     </div>
 </nav>
