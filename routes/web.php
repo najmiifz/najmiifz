@@ -14,6 +14,7 @@ Route::get('/', function () {
     return view('beranda');
 })->name('beranda');
 
+// Rute untuk Login/register + memilih akun
 Route::middleware('guest')->group(function () {
     Route::get('/pilih-akun-pelanggan', function () {
         $registerLink = route('register', ['role' =>'pelanggan']);
@@ -56,11 +57,12 @@ Route::middleware(['auth','role:mitra'])->group(function (){ // Added 'auth' for
     // Rute Manajemen Barbershop
     Route::get('/mitra/barbershop/create', [MitraDashboardController::class, 'create'])->name('mitra.barbershop.create');
     Route::post('/mitra/barbershop', [MitraDashboardController::class,'store'])->name('mitra.barbershop.store');
+    Route::get('/mitra/barbershop', [MitraDashboardController::class, 'barbershopIndex'])->name('mitra.barbershops.index');
     Route::get('/mitra/barbershop/{barbershop}/edit', [MitraDashboardController::class, 'edit'])->name('mitra.barbershop.edit');
     Route::put('/mitra/barbershop/{barbershop}', [MitraDashboardController::class, 'update'])->name('mitra.barbershop.update');
+    Route::delete('/mitra/barbershop/{barbershop}', [MitraDashboardController::class, 'destroy'])->name('mitra.barbershop.destroy');
 
     // -- Rute Manajemen Booking --
     Route::get('/mitra/bookings', [MitraDashboardController::class, 'showBookings'])->name('mitra.bookings.index');
     Route::post('/mitra/bookings/{booking}/status', [MitraDashboardController::class, 'updateBookingStatus'])->name('mitra.bookings.status.update');
-    // ---------------------------------------------
 });

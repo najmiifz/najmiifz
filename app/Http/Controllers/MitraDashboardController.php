@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Barbershop;
 use App\Models\Booking;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,16 +12,12 @@ class MitraDashboardController extends Controller
 {
     public function index()
     {
-        $barbershop = Barbershop::where('user_id', Auth::id())->first(); // Ambil barbershop milik mitra yang sedang login
-        return view('dashboard-mitra', compact('barbershop'));
+        $barbershops = Auth::user()->barbershops; // Ambil barbershop milik mitra yang sedang login
+        return view('dashboard-mitra', compact('barbershops'));
     }
 
     public function create()
     {
-        $existingBarbershop = Barbershop::where('user_id', Auth::id())->first(); // Cek apakah mitra sudah memiliki barbershop
-        if ($existingBarbershop) {
-            return redirect()->route('mitra.barbershop.edit', $existingBarbershop->id);
-        }
         return view('kelola-barber');
     }
 
@@ -34,20 +29,26 @@ class MitraDashboardController extends Controller
             'location' => 'required|string',
             'open_time' => 'required|date_format:H:i',
             'close_time' => 'required|date_format:H:i',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
-            'service_name.*' => 'required|string',
-            'service_price.*' => 'required|numeric',
+            'service_name.*' => 'sometimes|string',
+            'service_price.*' => 'sometimes|numeric',
         ]);
         $imagePath = $request->file('image')->store('barbershop_images', 'public');
+
         $services = [];
-        foreach ($request->service_name as $key => $name){
-            $services[] = [
-                'name' => $name,
-                'price' => $request->service_price[$key],
-                'duration' => $request->service_duration[$key] ?? 30,
-            ];
+        if($request->has('service_name')){
+            foreach ($request->service_name as $key => $name){
+                if (isset($request->service_price[$key]) && isset($request->service_duration[$key])) {
+                    $services[] = [
+                        'name' => $name,
+                        'price' => $request->service_price[$key],
+                        'duration' => $request->service_duration[$key] ?? 30,
+                    ];
+                }
+            }
         }
+
         $barbershop = Barbershop::create([
             'user_id' => Auth::id(),
             'name' => $request->name,
@@ -59,7 +60,7 @@ class MitraDashboardController extends Controller
             'image' => $imagePath,
             'services' => $services,
         ]);
-        return redirect()->route('dashboard.mitra')->with('success', 'Barbershop berhasil dibuat!');
+        return redirect()->route('mitra.barbershops.index')->with('success', 'Barbershop baru berhasil ditambahkan!');
     }
 
     public function edit(Barbershop $barbershop)
@@ -77,7 +78,8 @@ class MitraDashboardController extends Controller
         }
         $data = $request->except(['_token','_method','image']);
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($barbershop->image); // Hapus gambar lama
+            if($barbershop->image) // Cek apakah barbershop sudah memiliki gambar
+                Storage::disk('public')->delete($barbershop->image); // Hapus gambar lama jika ada
             $data['image'] = $request->file('image')->store('barbershop_images', 'public'); // Simpan gambar baru
         }
         $services = [];
@@ -93,14 +95,28 @@ class MitraDashboardController extends Controller
         $data['services'] = $services; // Simpan layanan yang ditawarkan
         $barbershop->update($data); // Update barbershop dengan data baru
 
-        return redirect()->route('mitra.barbershop.edit', $barbershop->id)->with('success', 'Barbershop berhasil diperbarui!');
+        return redirect()->route('mitra.barbershops.index', $barbershop->id)->with('success', 'Barbershop berhasil diperbarui!');
+    }
+    public function destroy(Barbershop $barbershop)
+    {
+        if ($barbershop->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk menghapus barbershop ini.');
+        }
+        if ($barbershop->image) {
+            Storage::disk('public')->delete($barbershop->image); // Hapus gambar barbershop jika ada
+        }
+        $barbershop->delete(); // Hapus barbershop dari database
+        return redirect()->route('mitra.barbershops.index')->with('success', 'Barbershop berhasil dihapus!');
+    }
+    public function barbershopIndex()
+    {
+        $barbershops = Auth::user()->barbershops;
+        return view('mitra.barbershops.index', compact('barbershops'));
     }
     public function showBookings(){
-        $barbershop =Barbershop::where('user_id', Auth::id())->first(); // Ambil barbershop milik mitra yang sedang login
-        if (!$barbershop){
-            return redirect()->route('dashboard.mitra')->with('error', 'Anda belum memiliki barbershop. Silakan buat barbershop terlebih dahulu.');
-        }
-        $bookings = Booking::where('barbershop_id', $barbershop->id)
+        $barbershopsIds = Auth::user()->barbershops->pluck('id'); // Ambil semua barbershop milik mitra yang sedang login
+
+        $bookings = Booking::whereIn('barbershop_id', $barbershopsIds)
                             ->with('user') // Mengambil relasi customer untuk menampilkan nama pelanggan
                             ->latest()
                             ->get(); // Ambil semua booking yang terkait dengan barbershop ini
@@ -124,6 +140,7 @@ class MitraDashboardController extends Controller
             abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengedit Booking');
         }
     }
+
 
 }
 

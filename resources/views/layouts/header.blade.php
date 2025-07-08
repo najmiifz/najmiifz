@@ -47,7 +47,7 @@
                     {{-- Partner-specific Links --}}
                     @if(Auth::user()->role == 'mitra')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('booking-mitra') }}"><i class="bi bi-speedometer2 me-1"></i>My Dashboard</a>
+                            <a class="nav-link" href="{{ route('dashboard.mitra') }}"><i class="bi bi-speedometer2 me-1"></i>My Dashboard</a>
                         </li>
                     @endif
 

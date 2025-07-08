@@ -90,9 +90,16 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h4><img src="/images/logocukur.png" alt="Logo">Mitra HayuCukur</h4>
-    <a href="#"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-    <a href="#"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
-    <a href="#"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+    {{-- Dashboard Link --}}
+    <a href="{{ route('dashboard.mitra') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+
+    {{-- Booking Link --}}
+    <a href="{{ route('mitra.bookings.index') }}"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
+
+    {{-- Barbershop Management Link --}}
+    <a href="{{ route('mitra.barbershops.index') }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
+
+    {{-- Logout Link --}}
     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><i class="bi bi-box-arrow-right"></i> Logout</a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
       @csrf
@@ -100,45 +107,73 @@
   </div>
 
   <!-- Main Content -->
-  <div class="main-content">
+    <div class="main-content">
         <div class="form-container">
             <h4><i class="bi bi-scissors"></i> Tambah Barbershop Baru</h4>
             <form method="POST" action="{{ route('mitra.barbershop.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                <label for="nama" class="form-label">Nama Barbershop</label>
-                <input type="text" id="nama" name="name" class="form-control" required>
+                    <label for="name" class="form-label">Nama Barbershop</label>
+                    <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="alamat" class="form-label">Alamat</label>
-                    <textarea id="alamat" name="address" class="form-control" rows="2" required></textarea>
+                    <label for="address" class="form-label">Alamat</label>
+                    <textarea id="address" name="address" class="form-control @error('address') is-invalid @enderror" rows="2" required>{{ old('address') }}</textarea>
+                    @error('address')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="kota" class="form-label">Kota</label>
-                    <input type="text" id="kota" name="location" class="form-control" required>
+                    <label for="location" class="form-label">Kota</label>
+                    <input type="text" id="location" name="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location') }}" required>
+                    @error('location')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="jam_buka" class="form-label">Jam Buka</label>
-                    <input type="time" id="jam_buka" name="open_time" class="form-control" required>
+                    <label for="open_time" class="form-label">Jam Buka</label>
+                    <input type="time" id="open_time" name="open_time" class="form-control @error('open_time') is-invalid @enderror" value="{{ old('open_time') }}" required>
+                    @error('open_time')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="jam_tutup" class="form-label">Jam Tutup</label>
-                    <input type="time" id="jam_tutup" name="close_time" class="form-control" required>
+                    <label for="close_time" class="form-label">Jam Tutup</label>
+                    <input type="time" id="close_time" name="close_time" class="form-control @error('close_time') is-invalid @enderror" value="{{ old('close_time') }}" required>
+                    @error('close_time')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="gambar" class="form-label">Foto Barbershop</label>
-                    <input type="file" id="gambar" name="image" class="form-control" required>
+                    <label for="image" class="form-label">Foto Barbershop</label>
+                    <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror" required>
+                    @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                <label for="deskripsi" class="form-label">Deskripsi Singkat</label>
-                <textarea id="deskripsi" name="description" class="form-control" rows="3" required></textarea>
+                    <label for="description" class="form-label">Deskripsi Singkat</label>
+                    <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="3" required>{{ old('description') }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <hr>
                 <h4>Layanan</h4>
                 <div id="services-container">
-                    </div>
+                    {{-- JavaScript will add services here --}}
+                </div>
                 <button type="button" id="add-service-btn" class="btn btn-secondary mt-2">Tambah Layanan</button>
+                @error('service_name.*')
+                    <div class="text-danger mt-2"><small>{{ $message }}</small></div>
+                @enderror
+                 @error('service_price.*')
+                    <div class="text-danger mt-2"><small>{{ $message }}</small></div>
+                @enderror
                 <hr>
 
                 <button type="submit" class="btn btn-danger w-100 mt-3">

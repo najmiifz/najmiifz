@@ -84,16 +84,13 @@
             </h4>
             <a href="{{ route('dashboard.mitra') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
 
-            {{-- Updated Booking Link --}}
+            {{-- Booking Link --}}
             <a href="{{ route('mitra.bookings.index') }}"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
 
-            {{-- Dynamic Barbershop Management Link --}}
-            @if ($barbershop)
-                <a href="{{ route('mitra.barbershop.edit', $barbershop->id) }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
-            @else
-                <a href="{{ route('mitra.barbershop.create') }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
-            @endif
+            {{-- Barbershop Management Link --}}
+            <a href="{{ route('mitra.barbershops.index') }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
 
+            {{-- Logout Link --}}
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                 <i class="bi bi-box-arrow-right me-1"></i>Logout
             </a>
@@ -124,12 +121,8 @@
                         <h5><i class="bi bi-scissors"></i> Kelola Barbershop</h5>
                         <p>Edit nama, alamat, jam operasional dan info lainnya dari barbershop kamu.</p>
 
-                        {{-- Updated and "Smart" Kelola Link --}}
-                        @if ($barbershop)
-                            <a href="{{ route('mitra.barbershop.edit', $barbershop->id) }}" class="btn btn-dark">Kelola Sekarang</a>
-                        @else
-                            <a href="{{ route('mitra.barbershop.create') }}" class="btn btn-dark">Kelola Sekarang</a>
-                        @endif
+                        {{-- Barbershop Management Link --}}
+                        <a href="{{ route('mitra.barbershops.index') }}" class="btn btn-dark">Kelola Sekarang</a>
                     </div>
                 </div>
             </div>
