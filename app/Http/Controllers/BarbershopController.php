@@ -12,15 +12,31 @@ class BarbershopController extends Controller
      */
     public function index(Request $request)
     {
+        //Filter berdasarkan kota
         $query = Barbershop::query();
-        if ($request->has('search')) {
-            $searchTerm =$request->input('search');
-            $query->where('name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('location', 'like', '%' . $searchTerm . '%');
+        if ($request->filled('kota')){
+            $query->where('location', $request->kota);
+        };
+        //Filter berdasarkan layanan
+        if ($request->filled('layanan')){
+            $query->whereJsonContains('services', ['name' => $request->layanan]);
         }
+        //Filter dari hasil pencarian
+        $barbershops = $query->latest()->get();
 
-        $barbershops = $query->get();
-        return view('dashboard', ['barbershops' => $barbershops]);
+        // Ambil semua lokasi unik dari kolom 'location'
+        $locations = Barbershop::select('location')->distinct()->pluck('location');
+
+        // Ambil semua layanan unik dari kolom 'services'
+        $allServices = Barbershop::pluck('services')->flatMap(function ($services) {
+            // Cek bila services adalah array
+            if (is_array($services)) {
+                return collect($services)->pluck('name');
+            }
+            return []; // mengembalikan array kosong jika services bukan array
+        })->unique()->sort();
+
+        return view('dashboard', compact('barbershops', 'locations', 'allServices'));
     }
 
     /**
@@ -44,7 +60,7 @@ class BarbershopController extends Controller
      */
     public function show(Barbershop $barbershop)
     {
-        return view('barbershop.show', ['barbershop' => $barbershop]);
+        return view('barbershop.show', compact('barbershop'));
     }
 
     /**
