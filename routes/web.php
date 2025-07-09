@@ -53,8 +53,9 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::get('/booking/payment', [BookingController::class, 'showPayment'])->name('booking.payment');
     Route::post('/booking/confirm', [BookingController::class, 'confirm'])->name('booking.confirm');
 
-    // Rute untuk riwayat booking
+    // Rute untuk riwayat booking dan pembatalan
     Route::get('/riwayat-booking', [BookingController::class, 'riwayat'])->name('riwayat-booking');
+    Route::post('/booking/{booking}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 });
 
 //Rute Mitra

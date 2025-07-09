@@ -1,184 +1,100 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Riwayat Booking - Hayu Cukur</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Riwayat Booking - Hayu Cukur</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #fffef8;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    .navbar {
-      background-color: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-      color: #1a252f;
-    }
-
-    .btn-login {
-      background-color: #dc3545;
-      color: #fff;
-      border-radius: 25px;
-      padding: 6px 16px;
-      font-weight: 500;
-    }
-
-    .btn-login:hover {
-      background-color: #bb2d3b;
-      color: #fff;
-    }
-
-    .hero-title {
-      font-family: 'Arial Black', sans-serif;
-      font-size: 2.4rem;
-      color: #d62828;
-      margin-bottom: 0;
-    }
-
-    .subtext {
-      font-size: 1rem;
-      color: #4a4a4a;
-    }
-
-    .card-booking {
-      background-color: #fff;
-      border: 1px solid #eee;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      transition: all 0.2s ease-in-out;
-    }
-
-    .card-booking:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-    }
-
-    .booking-detail {
-      font-size: 0.95rem;
-      color: #555;
-    }
-
-    .status {
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
-
-    .status-selesai {
-      background-color: #d1e7dd;
-      color: #0f5132;
-    }
-
-    .status-proses {
-      background-color: #fff3cd;
-      color: #664d03;
-    }
-
-    .status-batal {
-      background-color: #f8d7da;
-      color: #842029;
-    }
-
-    .section-title {
-      font-weight: bold;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #1a252f;
-    }
-
-    .btn-outline-danger {
-      border-radius: 20px;
-      font-size: 0.9rem;
-    }
-  </style>
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0d067;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            background-color: #1f1f1f !important;
+            border-bottom: 1px solid #333;
+        }
+        .navbar .nav-link, .navbar .navbar-brand, .dropdown-item, .nav-link span {
+            color: #f0d067 !important;
+        }
+        .card-booking {
+            background-color: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.2s ease-in-out;
+        }
+        .status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 50px;
+        }
+        .status-Menunggu { background-color: #ffc107; color: #000; }
+        .status-Diproses { background-color: #0dcaf0; color: #000; }
+        .status-Selesai { background-color: #198754; color: #fff; }
+        .status-Dibatalkan { background-color: #dc3545; color: #fff; }
+    </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light px-4 py-3">
-  <a class="navbar-brand d-flex align-items-center" href="/beranda">
-    <img src="/images/logo.png" alt="Hayu Cukur" style="height: 36px;" class="me-2">
-    Hayu Cukur
-  </a>
-  <div class="ms-auto">
-    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()" class="btn btn-login">Logout</a>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-      @csrf
-    </form>
-  </div>
-</nav>
+@include('layouts.header')
 
-<!-- Hero / Title -->
-<section class="container text-center my-5">
-  <h1 class="hero-title">Riwayat Booking Kamu</h1>
-  <p class="subtext">Lihat semua potongan yang pernah kamu booking, kapan aja, di mana aja.</p>
-</section>
-
-<!-- Riwayat Booking Cards -->
-<section class="container mb-5">
-  <div class="row g-4">
-
-    <!-- Card 1 -->
-    <div class="col-md-6 col-lg-4">
-      <div class="card-booking">
-        <h5 class="fw-bold">Gentleman's Cut - Barber Bro</h5>
-        <p class="booking-detail mb-1">Tanggal: 15 Juni 2025</p>
-        <p class="booking-detail mb-1">Jam: 14:00 WIB</p>
-        <p class="booking-detail mb-1">Harga: Rp25.000</p>
-        <span class="status status-selesai">Selesai</span>
-        <div class="text-end mt-2">
-          <a href="/riwayat/detail/1" class="btn btn-sm btn-outline-danger rounded-pill">Lihat Detail</a>
-        </div>
-      </div>
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Riwayat Booking Anda</h1>
+        <p class="text-muted">Lihat semua jadwal potong rambut Anda di sini.</p>
     </div>
 
-    <!-- Card 2 -->
-    <div class="col-md-6 col-lg-4">
-      <div class="card-booking">
-        <h5 class="fw-bold">Fade Haircut - Cukur Mas Bro</h5>
-        <p class="booking-detail mb-1">Tanggal: 13 Juni 2025</p>
-        <p class="booking-detail mb-1">Jam: 10:30 WIB</p>
-        <p class="booking-detail mb-1">Harga: Rp20.000</p>
-        <span class="status status-proses">Diproses</span>
-        <div class="text-end mt-2">
-          <a href="/riwayat/detail/2" class="btn btn-sm btn-outline-danger rounded-pill">Lihat Detail</a>
-        </div>
-      </div>
+    @if(session('success'))
+        <div class="alert alert-success" style="background-color: #198754; color: white; border: none;">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger" style="background-color: #dc3545; color: white; border: none;">{{ session('error') }}</div>
+    @endif
+
+    <div class="row g-4">
+        @forelse ($bookings as $booking)
+            <div class="col-md-6 col-lg-4">
+                <div class="card-booking d-flex flex-column h-100">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="fw-bold mb-1">{{ $booking->barbershop->name }}</h5>
+                            <span class="status status-{{ $booking->status }}">{{ $booking->status }}</span>
+                        </div>
+                        <p class="text-white-50 small mb-3">{{ $booking->barbershop->location }}</p>
+                        <p class="mb-1"><i class="bi bi-calendar-event me-2"></i>{{ \Carbon\Carbon::parse($booking->booking_time)->format('d F Y') }}</p>
+                        <p class="mb-1"><i class="bi bi-clock me-2"></i>{{ \Carbon\Carbon::parse($booking->booking_time)->format('H:i') }} WIB</p>
+                        <p class="mb-1"><i class="bi bi-tags-fill me-2"></i>Rp{{ number_format($booking->total_price, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        @if ($booking->status == 'Menunggu')
+                            <form action="{{ route('booking.cancel', $booking->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?');">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-danger w-100">Batalkan Booking</button>
+                            </form>
+                        @else
+                            <button class="btn btn-secondary w-100" disabled>Batalkan Booking</button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                    <h5 class="mt-3">Anda belum memiliki riwayat booking.</h5>
+                    <a href="{{ route('dashboard') }}" class="btn btn-danger mt-3">Cari Barbershop Sekarang</a>
+                </div>
+            </div>
+        @endforelse
     </div>
+</div>
 
-    <!-- Card 3 -->
-    <div class="col-md-6 col-lg-4">
-      <div class="card-booking">
-        <h5 class="fw-bold">Cukur Anak - Barbershop KidsZone</h5>
-        <p class="booking-detail mb-1">Tanggal: 10 Juni 2025</p>
-        <p class="booking-detail mb-1">Jam: 16:00 WIB</p>
-        <p class="booking-detail mb-1">Harga: Rp15.000</p>
-        <span class="status status-batal">Dibatalkan</span>
-        <div class="text-end mt-2">
-          <a href="/riwayat/detail/3" class="btn btn-sm btn-outline-danger rounded-pill">Lihat Detail</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="text-center text-muted py-4">
-  <div class="container">
-    <p>&copy; 2025 Hayu Cukur. All Rights Reserved.</p>
-  </div>
-</footer>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

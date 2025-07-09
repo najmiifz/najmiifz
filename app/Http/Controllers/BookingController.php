@@ -78,4 +78,19 @@ class BookingController extends Controller
 
         return view('riwayat-booking', ['bookings' => $bookings]);
     }
+
+    public function cancel(Booking $booking)
+    {
+        // Cek apakah booking yang ingin dibatalkan milik pengguna yang sedang login
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki izin untuk membatalkan booking ini.');
+        }
+        // Menolak pembatalan jika status booking bukan 'Menunggu'
+        if($booking->status !== 'Menunggu'){
+            return back()->with('error', 'tidak bisa dibatalkan karena status booking sudah ');
+        }
+        //update status booking menjadi 'Dibatalkan'
+        $booking->update(['status'=>'Dibatalkan']);
+        return back()->with('success', 'Booking berhasil dibatalkan.');
+    }
 }
