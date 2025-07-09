@@ -11,7 +11,19 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'barbershop_id',
+        'name',
         'booking_time',
+        'total_price',
         'status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function barbershop()
+    {
+        return $this->belongsTo(Barbershop::class);
+    }
 }

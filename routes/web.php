@@ -44,9 +44,16 @@ Route::middleware('auth')->group(function (){
 Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::get('/dashboard', [BarbershopController::class, 'index'])->name('dashboard');
     Route::get('/barbershop/{barbershop}', [BarbershopController::class, 'show'])->name('barbershop.show');
-    Route::get('/booking', [BookingController::class, 'riwayat'])->name('booking.riwayat');
+
+    // Rute untuk Booking
     Route::get('/booking/create/{barbershop}', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+
+    // Rute untuk pembayaran dan konfirmasi booking
+    Route::get('/booking/payment', [BookingController::class, 'showPayment'])->name('booking.payment');
+    Route::post('/booking/confirm', [BookingController::class, 'confirm'])->name('booking.confirm');
+
+    // Rute untuk riwayat booking
     Route::get('/riwayat-booking', [BookingController::class, 'riwayat'])->name('riwayat-booking');
 });
 
