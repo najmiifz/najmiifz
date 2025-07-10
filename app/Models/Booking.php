@@ -17,6 +17,12 @@ class Booking extends Model
         'status'
     ];
 
+    protected $casts = [
+        'booking_time' => 'datetime',
+        'total_price' => 'decimal:2', // Asumsi total_price adalah nilai desimal
+        'status' => 'string', // Asumsi status adalah string
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class); //relasi ke model User

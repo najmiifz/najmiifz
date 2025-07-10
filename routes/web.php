@@ -5,6 +5,7 @@ use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MitraDashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,20 @@ Route::middleware('auth')->group(function (){
         $request->session()->regenerateToken();
         return redirect()->route('beranda')->with('success', 'Berhasil Logout');
     })->name('logout');
+
+    // Rute untuk Profile
+    Route::get('profile', function(){
+        if (Auth::user()->role =='mitra'){
+            return app(ProfileController::class)->showMitraProfile();
+        }
+        return app(ProfileController::class)->showPelangganProfile();
+    })->name('profile.show');
+
+    // Rute untuk mengedit profile
+    Route::get('profile/edit', [ProfileController::class, 'showEditForm'])->name('profile.edit');
+
+    // Rute untuk mengupdate profile
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 //Rute Pelanggan

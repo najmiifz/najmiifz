@@ -49,7 +49,8 @@
                             <span>{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="background-color: #1f1f1f; border-color: #333;">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            {{-- **THE FIX:** This link now correctly points to the profile page route. --}}
+                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a></li>
                             <li><hr class="dropdown-divider" style="border-top-color: #444;"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
