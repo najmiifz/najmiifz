@@ -1,65 +1,56 @@
-<style>
-    /* Style for the navbar transition */
-    .navbar {
-        transition: top 0.3s ease-in-out;
-    }
-</style>
-
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
-    <div class="container-fluid">
-        {{-- Logo and Brand Name --}}
+<nav class="navbar navbar-expand-lg shadow-sm sticky-top" style="background-color: #1f1f1f;">
+    <div class="container">
         <a class="navbar-brand fw-bold" href="{{ route('beranda') }}">
-            <img src="/images/logocukur.png" alt="Logo" height="60" class="me-2 rounded">
-            HayuCukur
+            <img src="/images/logocukur.png" alt="Logo" style="height: 45px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            {{-- Custom Toggler Icon for dark theme --}}
+            <span class="navbar-toggler-icon" style="background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3e%3cpath stroke=%27%23f0d067%27 stroke-linecap=%27round%27 stroke-miterlimit=%2710%27 stroke-width=%272%27 d=%27M4 7h22M4 15h22M4 23h22%27/%3e%3c/svg%3e');"></span>
         </button>
         <div class="collapse navbar-collapse" id="mainNavbar">
-            {{-- Auth Links (Right Side) --}}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                 @guest
-                    {{-- SHOWS WHEN USER IS NOT LOGGED IN --}}
+                    {{-- Links for GUESTS (Not Logged In) --}}
                     <li class="nav-item">
-                        <a href="{{ route('pilih-akun-mitra') }}" class="nav-link">For Partners</a>
+                        <a class="nav-link" href="{{ route('pilih-akun-mitra') }}">Jadi Mitra</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('login') }}" class="btn btn-outline-secondary me-2">Log In</a>
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('pilih-akun-pelanggan') }}" class="btn btn-danger">Register</a>
+                        <a href="{{ route('pilih-akun-pelanggan') }}" class="btn btn-danger ms-2">Register</a>
                     </li>
                 @endguest
 
                 @auth
-                    {{-- SHOWS WHEN USER IS LOGGED IN --}}
+                    {{-- Links for LOGGED IN USERS --}}
 
-                    {{-- Customer-specific Links (from booking.blade.php) --}}
                     @if(Auth::user()->role == 'pelanggan')
+                        {{-- Customer-specific Links --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}"><i class="bi bi-house-door-fill me-1"></i>Dashboard</a>
+                            <a class="nav-link" href="{{ route('dashboard') }}"><i class="bi bi-house-door me-1"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('riwayat-booking') }}"><i class="bi bi-clock-history me-1"></i>My Bookings</a>
+                            <a class="nav-link" href="{{ route('riwayat-booking') }}"><i class="bi bi-clock-history me-1"></i>Riwayat Booking</a>
                         </li>
                     @endif
 
-                    {{-- Partner-specific Links --}}
                     @if(Auth::user()->role == 'mitra')
+                        {{-- Partner-specific Links --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard.mitra') }}"><i class="bi bi-speedometer2 me-1"></i>My Dashboard</a>
+                            <a class="nav-link" href="{{ route('dashboard.mitra') }}"><i class="bi bi-speedometer2 me-1"></i>Dashboard Mitra</a>
                         </li>
                     @endif
 
                     {{-- User Dropdown Menu (for both roles) --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-1"></i>
+                            <i class="bi bi-person-circle me-2"></i>
                             <span>{{ Auth::user()->name }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="background-color: #1f1f1f; border-color: #333;">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li><hr class="dropdown-divider" style="border-top-color: #444;"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -76,20 +67,3 @@
         </div>
     </div>
 </nav>
-
-<script>
-    let lastScrollTop = 0;
-    const navbar = document.querySelector('.navbar');
-
-    window.addEventListener("scroll", function() {
-        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > lastScrollTop && currentScroll > navbar.offsetHeight) {
-            // Scroll Down
-            navbar.style.top = `-${navbar.offsetHeight}px`; // Hides the navbar
-        } else {
-            // Scroll Up
-            navbar.style.top = "0"; // Shows the navbar
-        }
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-    }, false);
-</script>

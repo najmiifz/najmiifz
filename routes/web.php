@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MitraDashboardController;
 use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
@@ -11,9 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 //Routes ~ Home
-Route::get('/', function () {
-    return view('beranda');
-})->name('beranda');
+Route::get('/', [HomeController::class, 'index'])->name('beranda');
 
 // Rute untuk Login/register + memilih akun
 Route::middleware('guest')->group(function () {
