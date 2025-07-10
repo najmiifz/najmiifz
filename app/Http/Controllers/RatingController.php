@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Booking;
+use App\Models\Rating;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class RatingController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|exist:bookings, id|unique:ratings, booking_id',
+            'barbershop_id' => 'required|exist:barbershop_id',
+            'rating' => 'required|integer|min:1|max:5', // Validasi rating antara 1 sampai 5
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        $booking = Booking::findOrFail($request->booking_id);
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk memberikan rating pada booking ini.');
+        }
+        Rating::create([
+            'user_id'=> Auth::id(),
+            'barbershop_id' => $request->barbershop_id,
+            'booking_id' => $request->booking_id,
+            'rating' => $request->rating,
+            'comment' => $request->comment
+        ]);
+
+        return back()->with('success', 'Terima kasih telah memberikan rating pada barbershop ini.');
+    }
+}

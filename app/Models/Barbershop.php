@@ -27,5 +27,12 @@ class Barbershop extends Model
     public function user() {
         return $this->belongsTo(User::class); // Relasi ke model User
     }
+    public function ratings(){
+        return $this->hasMany(Rating::class); // Relasi ke model Rating
+    }
+    public function averageRating()
+{
+    return $this->ratings()->avg('rating'); // Menghitung rata-rata rating dari barbershop
+}
 
 }

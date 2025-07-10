@@ -6,6 +6,7 @@
     <title>Konfirmasi Booking - Hayu Cukur</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -17,11 +18,16 @@
         .step-progress { display: flex; justify-content: center; gap: 50px; margin: 20px 0; }
         .step-progress div { font-weight: 600; color: gray; }
         .step-progress .active { color: #f0d067; }
-        .card { border-radius: 15px; border: none; background-color: #1c1c1c; box-shadow: 0 5px 20px rgba(240, 208, 103, 0.1); color: #f0d067; }
+        .card { border-radius: 15px; border: 1px solid #333; background-color: #1c1c1c; box-shadow: 0 5px 20px rgba(240, 208, 103, 0.1); color: #f0d067; }
         .btn-confirm { background-color: #f0d067; color: #121212; font-weight: 600; padding: 12px; border-radius: 50px; width: 100%; border: none; }
         .btn-confirm:hover { background-color: #e6c85b; color: #121212; }
         .price { color: #f0d067; font-weight: 600; }
         hr { border-color: #f0d067; opacity: 0.2; }
+        .form-check-input:checked { background-color: #f0d067; border-color: #f0d067; }
+        .form-check-input:disabled { opacity: 0.5; }
+        .form-check-label strong { cursor: pointer; }
+        .form-check-label small { cursor: pointer; }
+        .form-check-input:disabled + .form-check-label { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -64,10 +70,23 @@
 
                 <div class="mt-3">
                     <h5 class="mb-3">Metode Pembayaran</h5>
-                    <div class="alert" style="background-color: #2a2a2a; border-color: #444;">
-                        <i class="bi bi-cash-coin me-2"></i>
-                        <strong>Bayar di Tempat (Cash on Delivery)</strong>
-                        <p class="mb-0 mt-1 small text-white-50">Anda akan membayar langsung di kasir barbershop saat kunjungan Anda.</p>
+
+                    {{-- Bayar di Tempat (Enabled and Default) --}}
+                    <div class="form-check p-3 rounded mb-2" style="background-color: #2a2a2a; border: 1px solid #444;">
+                        <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod" checked>
+                        <label class="form-check-label w-100" for="cod">
+                            <strong class="d-block">Bayar di Tempat (Cash on Delivery)</strong>
+                            <small class="text-white-50">Anda akan membayar langsung di kasir barbershop.</small>
+                        </label>
+                    </div>
+
+                    {{-- QRIS (Disabled Placeholder) --}}
+                    <div class="form-check p-3 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
+                        <input class="form-check-input" type="radio" name="payment_method" id="qris" value="qris" disabled>
+                        <label class="form-check-label w-100" for="qris">
+                            <strong class="d-block">QRIS (Scan Barcode)</strong>
+                            <small class="text-white-50">Segera Hadir!</small>
+                        </label>
                     </div>
                 </div>
 

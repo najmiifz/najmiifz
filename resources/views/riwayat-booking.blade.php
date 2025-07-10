@@ -38,6 +38,12 @@
         .status-Diproses { background-color: #0dcaf0; color: #000; }
         .status-Selesai { background-color: #198754; color: #fff; }
         .status-Dibatalkan { background-color: #dc3545; color: #fff; }
+        .rating-stars label { font-size: 1.5rem; color: grey; cursor: pointer; }
+        .rating-stars input:checked ~ label,
+        .rating-stars:not(:checked) > label:hover,
+        .rating-stars:not(:checked) > label:hover ~ label { color: #f0d067; }
+        .rating-stars input { display: none; }
+        .rating-stars { display: inline-block; direction: rtl; }
     </style>
 </head>
 <body>
@@ -72,17 +78,60 @@
                         <p class="mb-1"><i class="bi bi-tags-fill me-2"></i>Rp{{ number_format($booking->total_price, 0, ',', '.') }}</p>
                     </div>
                     <div class="mt-auto pt-3">
-                        @if ($booking->status == 'Menunggu')
+                        @if ($booking->status == 'Selesai' && !$booking->rating)
+                            <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#ratingModal-{{ $booking->id }}">
+                                Beri Ulasan
+                            </button>
+                        @elseif ($booking->status == 'Menunggu')
                             <form action="{{ route('booking.cancel', $booking->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?');">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger w-100">Batalkan Booking</button>
                             </form>
                         @else
-                            <button class="btn btn-secondary w-100" disabled>Batalkan Booking</button>
+                            {{-- Show nothing or a disabled button for other statuses --}}
                         @endif
                     </div>
                 </div>
             </div>
+
+            <!-- Rating Modal for each booking -->
+            @if ($booking->status == 'Selesai' && !$booking->rating)
+            <div class="modal fade" id="ratingModal-{{ $booking->id }}" tabindex="-1" aria-labelledby="ratingModalLabel-{{ $booking->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="background-color: #1c1c1c; color: #f0d067;">
+                        <div class="modal-header" style="border-bottom-color: #333;">
+                            <h5 class="modal-title" id="ratingModalLabel-{{ $booking->id }}">Beri Ulasan untuk {{ $booking->barbershop->name }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('rating.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
+                            <input type="hidden" name="barbershop_id" value="{{ $booking->barbershop_id }}">
+                            <div class="modal-body">
+                                <div class="text-center mb-3">
+                                    <label class="form-label">Rating Anda:</label>
+                                    <div class="rating-stars">
+                                        <input type="radio" id="star5-{{ $booking->id }}" name="rating" value="5" required/><label for="star5-{{ $booking->id }}">★</label>
+                                        <input type="radio" id="star4-{{ $booking->id }}" name="rating" value="4" /><label for="star4-{{ $booking->id }}">★</label>
+                                        <input type="radio" id="star3-{{ $booking->id }}" name="rating" value="3" /><label for="star3-{{ $booking->id }}">★</label>
+                                        <input type="radio" id="star2-{{ $booking->id }}" name="rating" value="2" /><label for="star2-{{ $booking->id }}">★</label>
+                                        <input type="radio" id="star1-{{ $booking->id }}" name="rating" value="1" /><label for="star1-{{ $booking->id }}">★</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment-{{ $booking->id }}" class="form-label">Ulasan (Opsional):</label>
+                                    <textarea class="form-control" id="comment-{{ $booking->id }}" name="comment" rows="3" style="background-color: #2a2a2a; color: #f0d067; border-color: #444;"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border-top-color: #333;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-danger">Kirim Ulasan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endif
         @empty
             <div class="col-12">
                 <div class="text-center py-5">
