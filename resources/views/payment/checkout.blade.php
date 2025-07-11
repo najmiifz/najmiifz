@@ -1,16 +1,16 @@
-@extends('layouts.pelanggan')
+@extends('layouts.pelanggan') {{-- Use the new customer layout --}}
 
-@section('title', 'Konfirmasi & Pembayaran')
+@section('title', 'Konfirmasi Pembayaran')
 
 @section('content')
 <div class="container my-5">
-    <div class="step-progress mb-5">
+    <div class="step-progress">
         <div>1. Pilih Layanan & Jadwal</div>
         <div class="active">2. Konfirmasi & Bayar</div>
         <div>3. Booking Berhasil</div>
     </div>
 
-    <div class="row g-4 justify-content-center">
+    <div class="row g-4 justify-content-center mt-4">
         <div class="col-lg-7">
             <div class="card p-4">
                 <h4 class="fw-bold text-center">Konfirmasi Booking Anda</h4>
@@ -35,17 +35,11 @@
                 {{-- Payment Method Selection --}}
                 <div class="mt-3">
                     <h5 class="mb-3">Pilih Metode Pembayaran</h5>
-                    <div class="d-grid gap-3">
-                        <button id="pay-button" class="btn btn-gold p-3 fw-bold">
+                    <div id="payment-options">
+                        {{-- This button will trigger the Midtrans popup --}}
+                        <button id="pay-button" class="btn btn-gold w-100 p-3 fw-bold">
                             <i class="bi bi-credit-card me-2"></i>Bayar Sekarang (Online)
                         </button>
-
-                        <form action="{{ route('booking.confirm') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-light w-100 p-3 fw-bold">
-                               <i class="bi bi-shop me-2"></i>Bayar di Tempat (COD)
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -55,7 +49,7 @@
 @endsection
 
 @push('scripts')
-{{-- Midtrans Snap.js Script and payment trigger logic --}}
+{{-- Add the Midtrans Snap.js script and payment trigger logic --}}
 <script src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 <script type="text/javascript">
     document.getElementById('pay-button').addEventListener('click', function () {
@@ -63,19 +57,19 @@
         snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
                 alert("Pembayaran berhasil!");
-                // The webhook will handle updating the booking status.
-                // We just need to redirect the user to their booking history.
+                // Redirect to booking history or a success page
                 window.location.href = "{{ route('riwayat-booking') }}";
             },
             onPending: function(result){
                 alert("Menunggu pembayaran Anda!");
+                // Redirect or update UI
                 window.location.href = "{{ route('riwayat-booking') }}";
             },
             onError: function(result){
                 alert("Pembayaran gagal!");
             },
             onClose: function(){
-                // Optional: You can add a message if the user closes the payment popup
+                alert('Anda menutup popup tanpa menyelesaikan pembayaran.');
             }
         });
     });

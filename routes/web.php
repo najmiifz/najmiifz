@@ -5,6 +5,7 @@ use App\Http\Controllers\BarbershopController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MitraDashboardController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
@@ -91,4 +92,7 @@ Route::middleware(['auth','role:mitra'])->group(function (){ // Added 'auth' for
     // -- Rute Manajemen Booking --
     Route::get('/mitra/bookings', [MitraDashboardController::class, 'showBookings'])->name('mitra.bookings.index');
     Route::post('/mitra/bookings/{booking}/status', [MitraDashboardController::class, 'updateBookingStatus'])->name('mitra.bookings.status.update');
+
+//Rute Pembayaran
+Route::get('/payment/{booking}/payment', [PaymentController::class, 'create'])->name('payment.create)');
 });

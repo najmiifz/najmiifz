@@ -7,6 +7,9 @@ use App\Models\Booking;
 use App\Models\Barbershop;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Midtrans\Config;
+use Midtrans\Snap;
+
 class BookingController extends Controller
 {
     public function create(Barbershop $barbershop)
@@ -47,7 +50,27 @@ class BookingController extends Controller
             return redirect()->route('dashboard');
         }
         $barbershop = Barbershop::findOrFail($details['barbershop_id']);
-        return view('booking.payment', compact('details', 'barbershop'));
+
+        // Konfigurasi kredensial Midtrans
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        // Menyiapkan parameter untuk transaksi
+        $params = [
+            'transaction_details' => [
+                'order_id' => 'BOOK-' . time(), // A unique order ID
+                'gross_amount' => $details['total_price'],
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
+        ];
+        //Dapatkan Snap Token dari Midtrans
+        $snapToken = Snap::getSnapToken($params);
+        return view('booking.payment', compact('details', 'barbershop', 'snapToken'));
     }
     public function confirm(Request $request)
     {
