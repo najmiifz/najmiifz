@@ -1,0 +1,27 @@
+/* resources/css/app.css */
+
+/*
+* ===============================================
+* HAYU CUKUR - GLOBAL STYLE OVERRIDES
+* ===============================================
+*/
+
+/* Fix navbar link colors */
+.navbar .nav-link {
+    color: #f0d067 !important;
+    font-weight: 600;
+}
+
+.navbar .nav-link:hover, .navbar .nav-link.active {
+    color: #ffffff !important;
+}
+
+/* Fix user dropdown menu item colors */
+.dropdown-item {
+    color: #f0d067 !important;
+}
+
+.dropdown-item:hover {
+    color: #121212 !important;
+    background-color: #f0d067;
+}

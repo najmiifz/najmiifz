@@ -77,8 +77,10 @@ class PaymentController extends Controller
         if($transaction == 'capture' || $transaction =='settlement') {
             if ($fraud == 'accept') {
                 //tandai booking sudah terkonfirmasi
-                $booking->payment_status = 'terbayar';
-                $booking->save();
+                $booking->update([
+                'payment_status' => 'Paid',
+                'status' => 'Selesai'
+                ]);
         } else if ($transaction == 'cancel' || $transaction == 'deny' || $transaction == 'expire') {
             //tandai booking sebagai dibatalkan/gagal
             $booking->payment_status = 'dibatalkan';

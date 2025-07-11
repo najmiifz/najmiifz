@@ -26,21 +26,38 @@ class BookingController extends Controller
             'total_price' => 'required|numeric|min:0',
         ]);
 
-        $request->session()->put('booking_details', $validatedData);
-        return redirect()->route('booking.payment');
+        $bookingDateTime = Carbon::parse($validatedData['booking_date']. ' ' . $validatedData['booking_time']);
+        $booking = Booking::create([
+            'user_id' => Auth::id(),
+            'barbershop_id' => $validatedData['barbershop_id'],
+            'name' => Auth::user()->name, // Mengambil nama pengguna yang sedang login
+            'booking_time' => $bookingDateTime,
+            'total_price' => $validatedData['total_price'],
+            'status' => 'Menunggu',
+            'payment_status' => 'Pending',
+            'payment_method' => 'Online', // Default payment method
+        ]);
+        //generate Midtrans Snap Token
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
 
-        // // menggabungkan tanggal dan waktu booking menjadi satu objek Carbon
-        // $bookingDateTime = Carbon::parse($request->booking_date . ' ' . $request->booking_time);
-        // Booking::create([
-        //    'user_id' => Auth::id(),
-        //     'barbershop_id' => $request->barbershop_id,
-        //     'booking_time' => $bookingDateTime,
-        //     'total_price' => $request->total_price,
-        //     'status' => 'Menunggu',
-        //     // mungkin ingin menyimpan layana yang dipilih sebagai JSON
-        //     //'services' => json_encode($request->services), // menyimpan layanan yang dipilih sebagai JSON
-        // ]);
-        // return redirect()->route('riwayat-booking')->with('success', 'Booking berhasil dibuat');
+        $params =[
+            'transaction_details' => [
+                'order_id' => $booking->id . '-' . time(), // Unique order ID
+                'gross_amount' => $booking->total_price,
+            ],
+            'customer_details' => [
+                'first_name' => $booking->name,
+                'email' => $booking->email,
+            ]
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
+        $booking->snap_token = $snapToken; // memasang token ke model sementara
+
+        return view('booking.payment', compact('booking'));
     }
     public function showPayment(Request $request)
     {
@@ -73,6 +90,7 @@ class BookingController extends Controller
         return view('booking.payment', compact('details', 'barbershop', 'snapToken'));
     }
     public function confirm(Request $request)
+    //digunakan untuk pembayaran ditempat
     {
         $details = $request->session()->get('booking_details');
 
@@ -87,10 +105,12 @@ class BookingController extends Controller
             'booking_time' => $bookingDateTime,
             'total_price' => $details['total_price'],
             'status' => 'Menunggu',
+            'payment_status' => 'Pending',
+            'payment_method' => 'Bayar Ditempat', // Metode pembayaran ditempat
         ]);
 
         $request->session()->forget('booking_details'); // Hapus detail booking dari session setelah konfirmasi
-        return redirect()->route('riwayat-booking')->with('success', 'Booking berhasil dibuat, anda akan dihubungi oleh pihak barbershop.');
+        return redirect()->route('riwayat-booking')->with('success', 'Booking berhasil dibuat, Booking Berhasil dibuat, silahkan datang ke barbershop pada waktu yang telah ditentukan.');
     }
 
     public function riwayat(){
@@ -115,5 +135,18 @@ class BookingController extends Controller
         //update status booking menjadi 'Dibatalkan'
         $booking->update(['status'=>'Dibatalkan']);
         return back()->with('success', 'Booking berhasil dibatalkan.');
+
+
     }
+    public function updateToPayOnSite(Booking $booking)
+        {
+            if(Auth::id() !== $booking->user_id){
+                abort(403, 'Anda tidak memiliki izin untuk mengubah metode pembayaran booking ini.');
+            }
+            $booking->update([
+                'payment_method' => 'Bayar Ditempat', // Update metode pembayaran menjadi Bayar Ditempat
+            ]);
+
+            return redirect()->route('riwayat-booking')->with('success', 'Metode pembayaran berhasil diubah menjadi Bayar Ditempat.');
+        }
 }

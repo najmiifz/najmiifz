@@ -75,6 +75,8 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
 
     // Rute untuk memberikan ulasan
     Route::post('/rating', [RatingController::class, 'store'])->name('rating.store');
+
+    Route::post('/booking/{booking}/update-to-cod', [BookingController::class, 'updateToPayOnSite'])->name('booking.pay-on-site');
 });
 
 //Rute Mitra

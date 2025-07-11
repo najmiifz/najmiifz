@@ -10,7 +10,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
-    {{-- Vite for custom styles (if you have any for the customer side) --}}
     @vite(['resources/css/app.css'])
 
     <style>
@@ -42,19 +41,16 @@
 </head>
 <body>
 
-    {{-- Include the consistent website header --}}
     @include('layouts.header')
 
-    <main class="py-4">
-        {{-- Content from other pages will be injected here --}}
-        @yield('content')
+    <main class="py-5">
+        {{-- This container will center the content of all child pages --}}
+        <div class="container">
+            @yield('content')
+        </div>
     </main>
 
-    {{-- You can add a consistent footer here if you have one --}}
-    {{-- @include('layouts.footer') --}}
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {{-- Any additional page-specific scripts can be pushed here --}}
     @stack('scripts')
 </body>
 </html>

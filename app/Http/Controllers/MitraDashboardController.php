@@ -33,7 +33,7 @@ class MitraDashboardController extends Controller
             //Hitung total pendapatan hari ini dari status 'Selesai'
             $totalPendapatanHariini = Booking::whereIn('barbershop_id', $barbershopIds)
             ->where('status', 'Selesai')
-            ->whereDate('booking_time', Carbon::today())
+            ->whereDate('updated_at', Carbon::today())
             ->sum('total_price'); // Secara langsung jumlahkan total harga dari booking yang selesai hari ini
         }
         // Kembalikan view dengan data yang diperlukan
@@ -152,14 +152,20 @@ class MitraDashboardController extends Controller
 
         return view('booking-mitra', compact('bookings')); // Tampilkan daftar booking pada mitra
     }
-    public function updateBookingStatus(Request $request, Booking $booking){
+    public function updateBookingStatus(Request $request, Booking $booking)
+    {
         $this->authorizeBookingManagement($booking); // memastikan mitra memiliki izin untuk mengelola booking ini
+
         $request->validate([
             'status' => 'required|in:Menunggu,Diproses,Selesai,Dibatalkan',
         ]);
         $booking->update([
             'status' => $request->status
         ]);
+        //bila status booking set ke selesai, dan menandai pembayran sudah terkonfirmasi
+        if ($request->status === 'Selesai' && $booking->payment_method == 'Bayar Ditempat') {
+            $booking->update(['payment_status' => 'Paid']); // Update status pembayaran jika booking selesai
+        }
         return back()->with('success', 'Status Booking sudah diperbarui!');
     }
 

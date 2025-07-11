@@ -14,7 +14,9 @@ class Booking extends Model
         'name',
         'booking_time',
         'total_price',
-        'status'
+        'status',
+        'payment_status',
+        'payment_method',
     ];
 
     protected $casts = [
