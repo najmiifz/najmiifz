@@ -1,0 +1,62 @@
+/* resources/css/mitra.css */
+
+.dropdown-item {
+    color: #f0d067 !important;
+}
+
+.dropdown-item:hover {
+    color: #121212 !important;
+    background-color: #f0d067;
+}
+
+.card-link {
+    text-decoration: none;
+}
+.card h5 {
+    color: #f0d067; /* Gold color for titles */
+}
+
+.card p {
+    color: #bdbdbd; /* A light grey for the description */
+}
+.navbar .nav-link {
+    color: #f0d067 !important;
+}
+
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+}
+.stat-card {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    color: #f0d067;
+    padding: 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(240, 208, 103, 0.1);
+}
+
+.stat-card h5 {
+    font-weight: bold;
+    color: #f0d067;
+}
+
+.stat-card p {
+    color: #a0a0a0; /* Lighter gray for better readability */
+}
+
+.btn-gold {
+    background-color: #f0d067;
+    color: #121212;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-gold:hover {
+    background-color: #d4b95d;
+    color: #121212;
+}

@@ -1,133 +1,78 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Mitra - Hayu Cukur</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.mitra')
 
-    <!-- Bootstrap + Icon -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+@section('title', 'Dashboard Mitra')
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-        }
+@section('content')
+    <h2 class="fw-bold">Halo, Mitra!</h2>
+    <p class="text-white-50">Selamat datang di Dashboard HayuCukur. Berikut adalah ringkasan bisnis Anda hari ini.</p>
 
-        .sidebar {
-            width: 250px;
-            background-color: #B22222;
-            color: white;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            position: fixed;
-        }
-
-        .sidebar h4 {
-            font-weight: bold;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar h4 img {
-            width: 35px;
-            height: 35px;
-            margin-right: 10px;
-            border-radius: 50%;
-        }
-
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .sidebar a:hover {
-            background-color: #9f1f1f;
-            padding: 0.5rem;
-            border-radius: 8px;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        .card h5 {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Sidebar -->
-        <div class="sidebar">
-            <h4>
-                <img src="/images/logocukur.png" alt="Logo">
-                <span>Mitra HayuCukur</span>
-            </h4>
-            <a href="{{ route('dashboard.mitra') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-
-            {{-- Booking Link --}}
-            <a href="{{ route('mitra.bookings.index') }}"><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</a>
-
-            {{-- Barbershop Management Link --}}
-            <a href="{{ route('mitra.barbershops.index') }}"><i class="bi bi-scissors"></i> Kelola Barbershop</a>
-
-            {{-- Logout Link --}}
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                <i class="bi bi-box-arrow-right me-1"></i>Logout
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        </div>
-
-        <div class="main-content">
-            <h2>Halo, Mitra!</h2>
-            <p class="text-muted">Selamat datang di Dashboard HayuCukur</p>
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
-            <div class="row mt-4">
-                <div class="col-md-6 mb-4">
-                    <div class="card shadow-sm p-4">
-                        <h5><i class="bi bi-calendar-check-fill"></i> Bookingan Pelanggan</h5>
-                        <p>Lihat semua daftar bookingan pelanggan yang masuk ke barbershop kamu.</p>
-                        {{-- Updated Booking Link --}}
-                        <a href="{{ route('mitra.bookings.index') }}" class="btn btn-danger">Lihat Bookingan</a>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <div class="card shadow-sm p-4">
-                        <h5><i class="bi bi-scissors"></i> Kelola Barbershop</h5>
-                        <p>Edit nama, alamat, jam operasional dan info lainnya dari barbershop kamu.</p>
-
-                        {{-- Barbershop Management Link --}}
-                        <a href="{{ route('mitra.barbershops.index') }}" class="btn btn-dark">Kelola Sekarang</a>
+    {{-- Stats Section --}}
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-journal-text fs-1 me-4"></i>
+                        <div>
+                            <h5 class="card-title">Total Booking</h5>
+                            <p class="card-text fs-4 fw-bold">{{ $totalBookings }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-4 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-calendar-day fs-1 me-4"></i>
+                        <div>
+                            <h5 class="card-title">Booking Hari Ini</h5>
+                            <p class="card-text fs-4 fw-bold">{{ $todayBookings }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-cash-coin fs-1 me-4"></i>
+                        <div>
+                            <h5 class="card-title">Total Pendapatan Hari Ini</h5>
+                            <p class="card-text fs-4 fw-bold">Rp {{ number_format($totalPendapatanHariIni, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    @if(session('success'))
+        <div class="alert alert-success mt-4" style="background-color: #198754; color: white; border: none;">
+            {{ session('success') }}
+        </div>
+    @endif
 
-</body>
-</html>
+    {{-- Main Action Cards --}}
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <a href="{{ route('mitra.bookings.index') }}" class="card-link">
+                <div class="card stat-card p-4 h-100">
+                    <h5 class="fw-bold"><i class="bi bi-calendar-check-fill me-2"></i>Bookingan Pelanggan</h5>
+                    <p>Lihat semua daftar bookingan pelanggan yang masuk ke barbershop kamu.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <a href="{{ route('mitra.barbershops.index') }}" class="card-link">
+                <div class="card stat-card p-4 h-100">
+                    <h5 class="fw-bold"><i class="bi bi-scissors me-2"></i>Kelola Barbershop</h5>
+                    <p>Edit nama, alamat, jam operasional dan info lainnya dari barbershop kamu.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+@endsection

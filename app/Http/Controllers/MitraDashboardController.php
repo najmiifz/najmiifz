@@ -7,13 +7,42 @@ use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class MitraDashboardController extends Controller
 {
     public function index()
     {
         $barbershops = Auth::user()->barbershops; // Ambil barbershop milik mitra yang sedang login
-        return view('dashboard-mitra', compact('barbershops'));
+        $barbershopIds = $barbershops->pluck('id'); // Ambil ID barbershop untuk digunakan dalam query
+
+        // Inisialisasi variabel untuk statistik
+        $totalBookings = 0;
+        $todayBookings = 0;
+        $totalPendapatanHariIni = 0;
+
+        if ($barbershopIds->isNotEmpty()) {
+            //hitung total booking untuk semua barbershop milik mitra
+            $totalBookings = Booking::whereIn('barbershop_id', $barbershopIds)->count();
+
+            //hitung booking hari ini
+            $todayBookings = Booking::whereIn('barbershop_id', $barbershopIds)
+            ->whereDate('booking_time', Carbon::today())
+            ->count();
+
+            //Hitung total pendapatan hari ini dari status 'Selesai'
+            $totalPendapatanHariini = Booking::whereIn('barbershop_id', $barbershopIds)
+            ->where('status', 'Selesai')
+            ->whereDate('booking_time', Carbon::today())
+            ->sum('total_price'); // Secara langsung jumlahkan total harga dari booking yang selesai hari ini
+        }
+        // Kembalikan view dengan data yang diperlukan
+        return view('dashboard-mitra', compact(
+                'barbershops',
+                'totalBookings',
+                'todayBookings',
+                'totalPendapatanHariIni'
+        ));
     }
 
     public function create()

@@ -29,9 +29,13 @@ class ProfileController extends Controller
         $barbershopIds = $barbershops->pluck('id');
 
         $stats =[
+            // hitung total booking yang pernah dilakukan di semua barbershop milik mitra
             'total_bookings'=>Booking::whereIn('barbershop_id', $barbershopIds)->count(),
-            'today_bookings'=>Booking::whereIn('barbershop_id', $barbershopIds)->whereDate('booking_time', today())->count(),
-            'total_earnings'=>Booking::whereIn('barbershop_id', $barbershopIds)->where('status', 'Selesai')->sum('total_price'),
+
+            //hitung total pendapatan semua booking yang sudah selesai
+            'total_earnings'=>Booking::whereIn('barbershop_id', $barbershopIds)
+            ->where('status', 'Selesai')
+            ->sum('total_price'),
 
         ];
         return view('profile.mitra', compact('user', 'stats'));
