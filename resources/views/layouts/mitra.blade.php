@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-     @vite(['resources/css/mitra.css'])> <!-- Menggunakan Vite untuk menampikan style -->
+     @vite(['resources/css/mitra.css']) <!-- Menggunakan Vite untuk menampikan style -->
     <style>
         body {
             background-color: #121212;
@@ -31,6 +31,28 @@
         }
         .main-content {
             flex: 1;
+        }
+        .form-control {
+            background-color: #2a2a2a;
+            color: #e9ecef;
+            border-color: #444;
+        }
+        .form-control:focus {
+            background-color: #2a2a2a;
+            color: #e9ecef;
+            border-color: #f0d067;
+            box-shadow: 0 0 0 0.25rem rgba(240, 208, 103, 0.25);
+        }
+        .btn-gold {
+            background-color: #f0d067;
+            color: #121212;
+            border: 1px solid #f0d067;
+            font-weight: bold;
+        }
+        .btn-gold:hover {
+            background-color: #d4b55a;
+            border-color: #d4b55a;
+            color: #121212;
         }
     </style>
 </head>
