@@ -24,6 +24,12 @@ class BarbershopController extends Controller
         //Filter dari hasil pencarian
         $barbershops = $query->latest()->get();
 
+        //menampilkan barbershop dengan jumlah rating
+        $barbershops = $query
+                    ->withCount('ratings')
+                    ->latest()
+                    ->get();
+
         // Ambil semua lokasi unik dari kolom 'location'
         $locations = Barbershop::select('location')->distinct()->pluck('location');
 

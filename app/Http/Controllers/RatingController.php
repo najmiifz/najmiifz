@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Barbershop;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,19 @@ class RatingController extends Controller
             'rating' => $request->rating,
             'comment' => $request->comment
         ]);
+
+        //menemukan barbershop yang sudah di-rating
+        $barbershop = Barbershop::find($request->barbershop_id);
+
+        if($barbershop) {
+            //hitung rata-rata rating baru
+            $newAverage = $barbershop->ratings()->avg('rating');
+
+            //Update Rata-rata rating barbershop
+            $barbershop->update([
+                'average_rating' => $newAverage
+            ]);
+        }
 
         return back()->with('success', 'Terima kasih telah memberikan rating pada barbershop ini.');
     }

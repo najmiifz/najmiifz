@@ -130,6 +130,11 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title fw-bold">{{ $barbershop->name }}</h5>
                         <p class="card-text mb-2 text-white-50"><i class="bi bi-geo-alt-fill"></i> {{ $barbershop->location }}</p>
+                        <p class="mb-2" style="color: #f0d067;">
+                            <i class="bi bi-star-fill"></i>
+                            {{ number_format($barbershop->average_rating, 1) }}
+                            <span class="text-white-50">({{ $barbershop->ratings_count }} ulasan)</span>
+                        </p>
                         <hr>
                         <div class="mt-auto">
                             <a href="{{ route('barbershop.show', $barbershop->id) }}" class="btn btn-danger w-100">Lihat Detail & Booking</a>
