@@ -26,7 +26,7 @@
             font-weight: 600;
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: #121212;
+            color: #121212 !important;
             background-color: #f0d067;
         }
         .main-content {

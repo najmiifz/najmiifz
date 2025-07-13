@@ -42,7 +42,11 @@
                             <span>{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="background-color: #1f1f1f; border-color: #333;">
-                            <li><a class="dropdown-item text-gold-hover" href="{{ route('profile.show') }}">Profile</a></li>
+                            <li>
+                                <a class="dropdown-item text-gold-hover" href="{{ Auth::user()->role == 'mitra' ? route('profile.mitra.show') : route('profile.pelanggan.show') }}">
+                                    Profile
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider" style="border-top-color: #444;"></li>
                             <li>
                                 <a class="dropdown-item text-gold-hover" href="{{ route('logout') }}"

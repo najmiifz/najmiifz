@@ -33,6 +33,13 @@
                 <label for="nama" class="form-label">Nama Barbershop</label>
                 <input type="text" id="nama" name="name" class="form-control" value="{{ $barbershop->name }}" required>
             </div>
+            <div class="mb-3">
+                <label for="phone_number" class="form-label">Nomor WhatsApp (Contoh: 6281234567890)</label>
+                <input type="text" id="phone_number" name="phone_number" class="form-control @error('phone_number') is-invalid @enderror" value="{{ old('phone_number', $barbershop->phone_number ?? '') }}">
+                @error('phone_number')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
             <hr style="border-color: #444;">
             <h5>Layanan</h5>

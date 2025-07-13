@@ -19,6 +19,7 @@
                     <thead>
                         <tr>
                             <th>Nama Pelanggan</th>
+                            <th>Nomor WhatsApp</th>
                             <th>Tanggal & Waktu</th>
                             <th>Status Saat Ini</th>
                             <th width="30%">Ubah Status</th>
@@ -28,6 +29,7 @@
                         @forelse ($bookings as $booking)
                             <tr>
                                 <td>{{ $booking->user->name ?? 'Pelanggan Dihapus' }}</td>
+                                <td>{{ $booking->user->phone_number ?? 'Tidak Tersedia' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($booking->booking_time)->format('d F Y, H:i') }}</td>
                                 <td>
                                     <span class="badge

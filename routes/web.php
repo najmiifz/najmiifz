@@ -42,12 +42,8 @@ Route::middleware('auth')->group(function (){
     })->name('logout');
 
     // Rute untuk Profile
-    Route::get('profile', function(){
-        if (Auth::user()->role =='mitra'){
-            return app(ProfileController::class)->showMitraProfile();
-        }
-        return app(ProfileController::class)->showPelangganProfile();
-    })->name('profile.show');
+    Route::get('/profile/pelanggan', [ProfileController::class, 'showPelangganProfile'])->name('profile.pelanggan.show');
+    Route::get('/profile/mitra', [ProfileController::class, 'showMitraProfile'])->name('profile.mitra.show');
 
     // Rute untuk mengedit profile
     Route::get('profile/edit', [ProfileController::class, 'showEditForm'])->name('profile.edit');
