@@ -106,4 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+@push('styles')
+    <style>
+        /* This targets the placeholder text specifically */
+        .form-control::placeholder {
+            color: #6c757d; /* A muted, light gray color */
+            opacity: 1;    /* Ensures the color is not faded */
+        }
+    </style>
+@endpush
 @endsection
+

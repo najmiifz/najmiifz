@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Barbershop;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Snap;
 
@@ -25,38 +26,56 @@ class BookingController extends Controller
             'booking_time' => 'required|date_format:H:i',
             'total_price' => 'required|numeric|min:0',
         ]);
+        $booking = null; // Inisialisasi variabel booking
 
-        $bookingDateTime = Carbon::parse($validatedData['booking_date']. ' ' . $validatedData['booking_time']);
-        $booking = Booking::create([
-            'user_id' => Auth::id(),
-            'barbershop_id' => $validatedData['barbershop_id'],
-            'name' => Auth::user()->name, // Mengambil nama pengguna yang sedang login
-            'booking_time' => $bookingDateTime,
-            'total_price' => $validatedData['total_price'],
-            'status' => 'Menunggu',
-            'payment_status' => 'Pending',
-            'payment_method' => 'Online', // Default payment method
-        ]);
-        //generate Midtrans Snap Token
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        try {
+            // Bungkus semua proses dalam transaksi
+            // Jika ada error, transaksi akan di-rollback secara otomatis
+            DB::transaction(function () use ($validatedData, $request, &$booking) {
+                $bookingDateTime = Carbon::parse($validatedData['booking_date']. ' ' . $validatedData['booking_time']);
 
-        $params =[
-            'transaction_details' => [
-                'order_id' => $booking->id . '-' . time(), // Unique order ID
-                'gross_amount' => $booking->total_price,
-            ],
-            'customer_details' => [
-                'first_name' => $booking->name,
-                'email' => $booking->email,
-            ]
-        ];
+                // buat catatan booking di dalam transaksi
+                $booking = Booking::create([
+                    'user_id' => Auth::id(),
+                    'barbershop_id' => $validatedData['barbershop_id'],
+                    'name' => Auth::user()->name,
+                    'booking_time' => $bookingDateTime,
+                    'total_price' => $validatedData['total_price'],
+                    'status' => 'Menunggu',
+                    'payment_status' => 'Pending',
+                    'payment_method' => 'Online',
+                ]);
 
-        $snapToken = Snap::getSnapToken($params);
-        $booking->snap_token = $snapToken; // memasang token ke model sementara
+                // Configure Midtrans
+                Config::$serverKey = config('midtrans.server_key');
+                Config::$isProduction = config('midtrans.is_production');
+                Config::$isSanitized = true;
+                Config::$is3ds = true;
 
+                $params =[
+                    'transaction_details' => [
+                        'order_id' => $booking->id . '-' . time(),
+                        'gross_amount' => $booking->total_price,
+                    ],
+                    'customer_details' => [
+                        'first_name' => $booking->user->name, // Use relationship for consistency
+                        'email' => $booking->user->email,
+                    ]
+                ];
+
+                // Jika baris kode ini gagal, Exception akan di intercept dan transaksi akan di-rollback
+                $snapToken = Snap::getSnapToken($params);
+
+                // simpan token ke dalam database
+                $booking->snap_token = $snapToken;
+                $booking->save();
+            });
+        } catch (\Exception $e) {
+            //jika apapun gagal, kembali dengan pesan error
+            return back()->with('error', 'Gagal memproses booking: ' . $e->getMessage())->withInput();
+        }
+
+        // jika semua berhadil, lanjut ke tampilan pembayaran
         return view('booking.payment', compact('booking'));
     }
     public function showPayment(Request $request)

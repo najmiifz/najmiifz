@@ -54,7 +54,11 @@
             border-color: #d4b55a;
             color: #121212;
         }
+        .card h4, .card p > strong {
+            color: #f0d067;
+        }
     </style>
+    @stack('styles')
 </head>
 <body>
     <div class="d-flex">
