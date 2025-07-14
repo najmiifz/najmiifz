@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Barbershop;
+use App\Mail\NewBookingNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Midtrans\Config;
 use Midtrans\Snap;
 
@@ -41,6 +43,7 @@ class BookingController extends Controller
                     'name' => Auth::user()->name,
                     'booking_time' => $bookingDateTime,
                     'total_price' => $validatedData['total_price'],
+                    'services' => $validatedData['services'],
                     'status' => 'Menunggu',
                     'payment_status' => 'Pending',
                     'payment_method' => 'Online',
@@ -117,7 +120,7 @@ class BookingController extends Controller
             return redirect()->route('dashboard')->with('error', 'Sesi booking Anda telah berakhir.');
         }
         $bookingDateTime = Carbon::parse($details['booking_date'] . ' ' . $details['booking_time']);
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => Auth::id(),
             'barbershop_id' => $details['barbershop_id'],
             'name' => Auth::user()->name, // Mengambil nama pengguna yang sedang login
@@ -127,6 +130,8 @@ class BookingController extends Controller
             'payment_status' => 'Pending',
             'payment_method' => 'Bayar Ditempat', // Metode pembayaran ditempat
         ]);
+
+        Mail::to($booking->barbershop->user->email)->send(new NewBookingNotification($booking));
 
         $request->session()->forget('booking_details'); // Hapus detail booking dari session setelah konfirmasi
         return redirect()->route('riwayat-booking')->with('success', 'Booking berhasil dibuat, Booking Berhasil dibuat, silahkan datang ke barbershop pada waktu yang telah ditentukan.');

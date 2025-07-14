@@ -8,6 +8,7 @@ use App\Http\Controllers\MitraDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\MidtransController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -94,3 +95,6 @@ Route::middleware(['auth','role:mitra'])->group(function (){ // Added 'auth' for
 //Rute Pembayaran
 Route::get('/payment/{booking}/payment', [PaymentController::class, 'create'])->name('payment.create)');
 });
+
+//Rute Email
+Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])->name('midtrans.notification');

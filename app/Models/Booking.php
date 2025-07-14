@@ -17,10 +17,13 @@ class Booking extends Model
         'status',
         'payment_status',
         'payment_method',
-        'completed_at'
+        'services',
+        'completed_at',
+        'snap_token',
     ];
 
     protected $casts = [
+        'services' => 'array', // Asumsi services adalah array JSON
         'booking_time' => 'datetime',
         'total_price' => 'decimal:2', // Asumsi total_price adalah nilai desimal
         'status' => 'string', // Asumsi status adalah string
