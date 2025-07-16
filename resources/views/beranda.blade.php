@@ -107,7 +107,7 @@
 
             {{-- Slide 3 --}}
             <div class="carousel-item">
-                <img src="YOUR_IMAGE_URL_3" class="d-block w-100" style="height: 90vh; object-fit: cover; filter: brightness(50%);" alt="Slide 3">
+                <img src="/images/gambar3.jpg" class="d-block w-100" style="height: 90vh; object-fit: cover; filter: brightness(50%);" alt="Slide 3">
                 <div class="carousel-caption d-none d-md-block" style="top: 50%; transform: translateY(-50%);">
                     <h1 class="fw-bold">Jadwalkan Kunjungan Anda</h1>
                     <p class="fs-4">Booking mudah dan cepat, tanpa perlu antre.</p>
@@ -175,8 +175,19 @@
             <a href="{{ route('pilih-akun-mitra') }}" class="btn btn-gradient btn-lg">Daftar Jadi Mitra</a>
         </div>
     </section>
-
     <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h5 class="mb-0">HayuCukur</h5>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="text-white-50 mb-0">&copy; 2025 HayuCukur. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {{-- <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-5 mb-lg-0">
@@ -213,7 +224,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer> --}}  {{-- jika ingin menampilkan lokasi / sosmed / keterangan lain nya --}}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
