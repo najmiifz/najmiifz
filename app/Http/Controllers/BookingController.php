@@ -129,6 +129,7 @@ class BookingController extends Controller
             'status' => 'Menunggu',
             'payment_status' => 'Pending',
             'payment_method' => 'Bayar Ditempat', // Metode pembayaran ditempat
+            'services' => $details['services'] ?? [], // Pastikan services adalah array, jika tidak ada, set sebagai array kosong
         ]);
 
         Mail::to($booking->barbershop->user->email)->send(new NewBookingNotification($booking));
