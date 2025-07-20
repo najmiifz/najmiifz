@@ -152,7 +152,7 @@
                                 @if($barbershop->ratings_count > 0)
                                     <p class="barber-rating"><i class="bi bi-star-fill"></i> {{ $barbershop->averageRating() }} ({{ $barbershop->ratings_count }}+)</p>
                                 @else
-                                    <p class="barber-rating text-muted">Belum ada rating</p>
+                                    <p class="barber-rating text-white-50">Belum ada rating</p>
                                 @endif
                                 <a href="{{ route('barbershop.show', $barbershop->id) }}" class="btn btn-gradient btn-sm mt-2"><span>Lihat Detail</span></a>
                             </div>

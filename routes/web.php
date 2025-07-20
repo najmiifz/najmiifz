@@ -88,9 +88,12 @@ Route::middleware(['auth','role:mitra'])->group(function (){ // Added 'auth' for
     Route::put('/mitra/barbershop/{barbershop}', [MitraDashboardController::class, 'update'])->name('mitra.barbershop.update');
     Route::delete('/mitra/barbershop/{barbershop}', [MitraDashboardController::class, 'destroy'])->name('mitra.barbershop.destroy');
 
-    // -- Rute Manajemen Booking --
+    // Rute Manajemen Booking
     Route::get('/mitra/bookings', [MitraDashboardController::class, 'showBookings'])->name('mitra.bookings.index');
     Route::post('/mitra/bookings/{booking}/status', [MitraDashboardController::class, 'updateBookingStatus'])->name('mitra.bookings.status.update');
+
+    // Rute untuk melihat statistik booking secara real-time
+    Route::get('/mitra/chart-data', [MitraDashboardController::class, 'getChartData'])->name('mitra.chart.data');
 
 //Rute Pembayaran
 Route::get('/payment/{booking}/payment', [PaymentController::class, 'create'])->name('payment.create)');

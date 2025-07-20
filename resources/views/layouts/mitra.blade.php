@@ -57,6 +57,15 @@
         .card h4, .card p > strong {
             color: #f0d067;
         }
+        .btn-outline-gold {
+            color: #f0d067;
+            border-color: #f0d067;
+        }
+        .btn-outline-gold:hover {
+            color: #121212;
+            background-color: #f0d067;
+            border-color: #f0d067;
+        }
     </style>
     @stack('styles')
 </head>
@@ -90,5 +99,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 </html>
