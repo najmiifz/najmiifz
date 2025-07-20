@@ -44,7 +44,7 @@
                             if (substr($waNumber, 0, 1) === '0') {
                                 $waNumber = '62' . substr($waNumber, 1);
                             }
-                            $message = "Halo " . $booking->user->name . ", ini dari " . $booking->barbershop->name . " mengenai booking Anda pada tanggal " . \Carbon\Carbon::parse($booking->booking_time)->format('d F Y, H:i') . ".";
+                            $message = "Halo " . htmlspecialchars($booking->user->name, ENT_QUOTES, 'UTF-8') . ", ini dari " . htmlspecialchars($booking->barbershop->name, ENT_QUOTES, 'UTF-8') . " mengenai booking Anda pada tanggal " . \Carbon\Carbon::parse($booking->booking_time)->format('d F Y, H:i') . ".";
                         @endphp
                         <a href="https://wa.me/{{ $waNumber }}?text={{ urlencode($message) }}" target="_blank" class="btn btn-sm" style="background-color: #25D366; color: white;">
                             <i class="bi bi-whatsapp"></i> Chat

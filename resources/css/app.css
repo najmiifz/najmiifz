@@ -1,4 +1,6 @@
 /* resources/css/app.css */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 /*
 * ===============================================
@@ -29,4 +31,7 @@
 .dashboard-text-and-icon {
     color: white !important;
     fill: white !important;
+}
+.navbar.sticky-top {
+    transition: top 0.4s ease;
 }

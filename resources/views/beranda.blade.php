@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Hayu Cukur - Cukur Gampang & Kekinian</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -79,6 +78,17 @@
         .footer a:hover { color: var(--primary); transform: translateX(5px); }
         .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(240,208,103,0.1); border-radius: 50%; font-size: 1.2rem; margin-right: 10px; color: var(--primary); transition: all 0.3s ease; }
         .social-icons a:hover { background: var(--primary); color: var(--dark); transform: translateY(-3px); }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem; /* Reduce font size on smaller screens */
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-padding {
+                padding: 60px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -225,7 +235,5 @@
             </div>
         </div>
     </footer> --}}  {{-- jika ingin menampilkan lokasi / sosmed / keterangan lain nya --}}
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

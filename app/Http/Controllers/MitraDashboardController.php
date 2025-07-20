@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barbershop;
 use App\Models\Booking;
+use App\Http\Requests\StoreBarbershopRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -118,42 +119,32 @@ class MitraDashboardController extends Controller
         return view('kelola-barber');
     }
 
-    public function store(Request $request)
+    public function store(StoreBarbershopRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'location' => 'required|string',
-            'open_time' => 'required|date_format:H:i',
-            'close_time' => 'required|date_format:H:i',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'required|string',
-            'service_name.*' => 'sometimes|string',
-            'service_price.*' => 'sometimes|numeric',
-        ]);
-        $imagePath = $request->file('image')->store('barbershop_images', 'public');
+        $validateData = $request->validated();
 
-        $services = [];
-        if($request->has('service_name')){
-            foreach ($request->service_name as $key => $name){
-                if (isset($request->service_price[$key]) && isset($request->service_duration[$key])) {
-                    $services[] = [
-                        'name' => $name,
-                        'price' => $request->service_price[$key],
-                        'duration' => $request->service_duration[$key] ?? 30,
-                    ];
-                }
+        $imagePath = $request->file('image')->store('barbershop_images', 'public'); // Simpan gambar barbershop
+
+        $services = []; // Inisialisasi array untuk layanan yang ditawarkan
+        if (isset($validateData['service_name'])) {
+            foreach ($validateData['service_name'] as $key => $name) {
+                $service[] = [
+                    'name' => $name,
+                    'price' => $validateData['service_price'][$key],
+                    'duration' => $validateData['service_duration'][$key] ?? 30, // Default durasi 30 menit jika tidak diisi
+                ];
             }
         }
 
+
         $barbershop = Barbershop::create([
             'user_id' => Auth::id(),
-            'name' => $request->name,
-            'address' => $request->address,
-            'location' => $request->location,
-            'description' => $request->description,
-            'open_time' => $request->open_time,
-            'close_time' => $request->close_time,
+            'name' => $validateData['name'],
+            'address' => $validateData['address'],
+            'location' => $validateData['location'],
+            'description' => $validateData['description'],
+            'open_time' => $validateData['open_time'],
+            'close_time' => $validateData['close_time'],
             'image' => $imagePath,
             'services' => $services,
         ]);
