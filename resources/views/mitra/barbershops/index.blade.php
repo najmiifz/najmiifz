@@ -10,12 +10,6 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success" style="background-color: #198754; color: white; border: none;">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="card mt-4" style="background-color: #1c1c1c; border-color: #333;">
         <div class="card-body">
             <div class="table-responsive">
