@@ -1,8 +1,7 @@
-@extends('layouts.mitra')
-
-@section('title', 'Dashboard Mitra')
-
-@section('content')
+<x-mitra-layout>
+    <x-slot name="title">
+        Dashboard Mitra
+    </x-slot>
     <h2 class="fw-bold">Halo, Mitra!</h2>
     <p class="text-white-50">Selamat datang di Dashboard HayuCukur. Berikut adalah ringkasan bisnis Anda hari ini.</p>
 
@@ -81,7 +80,7 @@
             </a>
         </div>
     </div>
-@endsection
+</x-mitra-layout>
 
 @push('page-scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

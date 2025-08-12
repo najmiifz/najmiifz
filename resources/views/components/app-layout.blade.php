@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@yield('title', 'Hayu Cukur') - Cukur Gampang & Kekinian</title>
+    <title>{{ $title ?? 'HayuCukur' }} - Cukur Gampang & Kekinian</title>
 
     {{-- Stylesheets --}}
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -44,7 +44,7 @@
     <main class="py-5">
         {{-- This container will center the content of all child pages --}}
         <div class="container">
-            @yield('content')
+            {{ $slot }}
         </div>
     </main>
     @stack('scripts')

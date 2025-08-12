@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard Mitra') - Hayu Cukur</title>
+    <title>{{ $title ?? 'Dashboard Mitra' }} - Hayu Cukur</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -124,7 +124,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                @yield('content')
+                {{ $slot }}
             </div>
         </div>
     </div>
