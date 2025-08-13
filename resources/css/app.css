@@ -50,3 +50,46 @@
 .btn-danger:hover {
             background-color: #e6c856;
 }
+.step-progress {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 20px 0;
+        }
+        .step-progress div {
+            font-weight: 600;
+            color: gray;
+        }
+        .step-progress .active {
+            color: #f0d067;
+        }
+        .card {
+            background-color: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 15px;
+        }
+        .card h4, .card h5, .form-label, .form-check-label {
+            color: #f0d067;
+        }
+        .form-control, .form-select, .form-check-input {
+            color: #f0d067;
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+        .form-select:disabled {
+            background-color: #333;
+            color: #888;
+        }
+        .form-control::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+        .form-check-input:checked {
+            background-color: #f0d067;
+            border-color: #f0d067;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #2a2a2a;
+            color: #f0d067;
+            border-color: #f0d067;
+            box-shadow: 0 0 0 0.25rem rgba(240, 208, 103, 0.25);
+        }

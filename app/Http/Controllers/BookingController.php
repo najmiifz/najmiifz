@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Barbershop;
 use App\Mail\NewBookingNotification;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +22,79 @@ class BookingController extends Controller
     {
         return view('booking.create', compact ('barbershop'));
     }
+   // app/Http/Controllers/BookingController.php
+
+// app/Http/Controllers/BookingController.php
+
+public function getAvailability(Request $request, Barbershop $barbershop)
+{
+    // === DEBUGGING POINT 1: VALIDATION ===
+    // Does the request have the correct data?
+    $validated = $request->validate([
+        'date' => 'required|date_format:Y-m-d',
+        'service_id' => 'required|integer',
+    ]);
+    // Uncomment the line below to test this point
+    // dd('Step 1: Validation passed. Data:', $validated);
+
+
+    // === DEBUGGING POINT 2: GETTING THE SERVICE ===
+    // Is the service data being loaded correctly?
+    $allBarbershopServices = $barbershop->services ?? [];
+    $selectedService = $allBarbershopServices[$validated['service_id']] ?? null;
+
+    if (!$selectedService || !isset($selectedService['duration'])) {
+        // If the service or its duration doesn't exist, fail loudly.
+        return response()->json(['error' => 'Invalid service or duration missing.'], 400);
+    }
+    // Uncomment the line below to test this point
+    // dd('Step 2: Service found. Details:', $selectedService);
+
+
+    // === DEBUGGING POINT 3: CHECKING EXISTING BOOKINGS ===
+    // Are we finding the bookings for the selected date?
+    $selectedDate = Carbon::parse($validated['date']);
+    $existingBookings = Booking::where('barbershop_id', $barbershop->id)
+                               ->whereDate('booking_time', $selectedDate)
+                               ->get();
+    // Uncomment the line below to test this point
+    //dd('Step 3: Found existing bookings. Count:', count($existingBookings), 'Bookings:', $existingBookings);
+
+
+    // If we get here without dd(), the final logic runs.
+    $serviceDuration = $selectedService['duration'];
+    $openTime = $selectedDate->copy()->setTimeFromTimeString($barbershop->open_time);
+    $closeTime = $selectedDate->copy()->setTimeFromTimeString($barbershop->close_time);
+
+    $interval = CarbonInterval::minutes(30);
+    $timeSlots = new CarbonPeriod($openTime, $interval, $closeTime->subMinutes($serviceDuration));
+
+    $availableSlots = [];
+    foreach ($timeSlots as $slot) {
+        $isAvailable = true;
+        $potentialStart = $slot;
+        $potentialEnd = $slot->copy()->addMinutes($serviceDuration);
+
+        foreach ($existingBookings as $booking) {
+            $existingService = $allBarbershopServices[$booking->service_id] ?? null;
+            if (!$existingService) continue;
+
+            $existingStart = $selectedDate->copy()->setTimeFromTimeString($booking->booking_time);
+            $existingEnd = $existingStart->copy()->addMinutes($existingService['duration']);
+
+            if ($potentialStart < $existingEnd && $potentialEnd > $existingStart) {
+                $isAvailable = false;
+                break;
+            }
+        }
+
+        if ($isAvailable) {
+            $availableSlots[] = $potentialStart->format('H:i');
+        }
+    }
+
+    return response()->json($availableSlots);
+}
     public function store(Request $request)
     {
         $validatedData = $request->validate([

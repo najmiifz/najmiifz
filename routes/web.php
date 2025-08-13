@@ -101,3 +101,6 @@ Route::get('/payment/{booking}/payment', [PaymentController::class, 'create'])->
 
 //Rute Email
 Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])->name('midtrans.notification');
+
+//Rute ketersediaan waktu sebuah barbershop
+Route::get('/booking/{barbershop}/availability', [BookingController::class, 'getAvailability'])->name('booking.availability');
