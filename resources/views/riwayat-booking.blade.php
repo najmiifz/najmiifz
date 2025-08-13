@@ -1,8 +1,8 @@
-@extends('layouts.pelanggan')
+<x-app-layout>
+    <x-slot name="title">
+        Riwayat Bookingan
+    </x-slot>
 
-@section('title', 'Riwayat Booking')
-
-@section('content')
     <div class="text-center mb-5">
         <h1 class="fw-bold">Riwayat Booking Anda</h1>
         <p class="text-white-50">Lihat semua jadwal potong rambut Anda di sini.</p>
@@ -113,4 +113,4 @@
         }
         .rating-stars input { display: none; }
     </style>
-@endsection
+</x-app-layout>

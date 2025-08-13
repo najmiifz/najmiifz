@@ -1,8 +1,8 @@
-@extends('layouts.mitra')
+<x-mitra-layout>
+    <x-slot name="title">
+        Kelola Barbershop
+    </x-slot>
 
-@section('title', 'Kelola Barbershop')
-
-@section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0"><i class="bi bi-scissors me-2"></i>Kelola Barbershop Anda</h2>
         <a href="{{ route('mitra.barbershop.create') }}" class="btn btn-gold">
@@ -45,4 +45,4 @@
             </div>
         </div>
     </div>
-@endsection
+</x-mitra-layout>

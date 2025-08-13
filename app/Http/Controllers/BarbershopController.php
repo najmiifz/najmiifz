@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barbershop;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBarbershopRequest;
 
 class BarbershopController extends Controller
 {
@@ -56,32 +57,19 @@ class BarbershopController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBarbershopRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'location' => 'required|stringmax:255',
-            'open_time' => 'required|date_format:H:i',
-            'close_time' => 'required|date_format:H:i',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'required|string',
-            'phone_number' => 'nullable|string|max:20',
-            'service_name.*' => 'required|string|max:255',
-            'service_price.*' => 'required|integer|',
-            'service_duration.*' => 'required|integer',
+        $validatedData = $request->validated();
 
-        ]);
-
-        $imagePath = $request->filr('image')->store('barbershop_images', 'public');
+        $imagePath = $request->file('image')->store('barbershop_images', 'public');
 
         $services = [];
-        if ($request->has('service_name')) {
-            foreach ($request->service_name as $index => $name) {
-                $services[] =[
+        if (isset($validatedData['service_name'])) {
+            foreach ($validatedData['service_name'] as $index => $name) {
+                $services[] = [
                     'name' => $name,
-                    'price' => $request->service_price[$index],
-                    'duration' => $request->service_duration[$index],
+                    'price' => $validatedData['service_price'][$index],
+                    'duration' => $validatedData['service_duration'][$index],
                 ];
             }
         }

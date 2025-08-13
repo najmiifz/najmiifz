@@ -1,8 +1,7 @@
-@extends('layouts.pelanggan')
-
-@section('title', 'Konfirmasi & Pembayaran')
-
-@section('content')
+<x-app-layout>
+    <x-slot name="title">
+        Konfirmasi & Pembayaran Bookingan
+    </x-slot>
     <div class="step-progress mb-5 text-center">
         <div class="d-inline-block mx-3">1. Pilih Layanan & Jadwal</div>
         <div class="d-inline-block mx-3 active"><strong>2. Konfirmasi & Bayar</strong></div>
@@ -56,7 +55,7 @@
             </div>
         </div>
     </div>
-@endsection
+</x-app-layout>
 
 @push('scripts')
 {{-- Midtrans Snap.js Script and payment trigger logic --}}
